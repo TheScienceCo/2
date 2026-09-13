@@ -199,3 +199,33 @@ def _plain(value: object) -> object:
     if hasattr(value, "item"):
         return value.item()  # type: ignore[union-attr]
     return value
+
+
+class BaselineService:
+    """Service for looking up cohort baselines."""
+
+    def __init__(self, session: Session):
+        self.session = session
+
+    def lookup(
+        self,
+        metric: str,
+        dimensions: dict,
+        *,
+        source: BaselineSource = BaselineSource.EXTERNAL_CORPUS,
+    ) -> CohortBaseline | None:
+        """The most specific baseline available for these dimensions."""
+        return lookup(self.session, metric, dimensions, source=source)
+
+    def rebuild(
+        self,
+        *,
+        source: BaselineSource = BaselineSource.EXTERNAL_CORPUS,
+        exclude_low_confidence_patch: bool = True,
+    ) -> BaselineReport:
+        """Recompute baselines for every cohort shape."""
+        return rebuild_baselines(
+            self.session,
+            source=source,
+            exclude_low_confidence_patch=exclude_low_confidence_patch,
+        )
