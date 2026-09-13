@@ -12,8 +12,8 @@ Or without Docker: `make install && make api` in one shell, `make web` in
 another. Analysing a replay from the command line:
 
 ```bash
-make analyse REC=~/Games/AoE2DE/SaveGame/rec.aoe2record
-```
+make analyse REC=~/Games/AoE2DE/SaveGame/rec.aoe2record 
+``` 
 
 ---
 
