@@ -28,7 +28,7 @@ log = get_logger(__name__)
 router = APIRouter()
 
 
-def _load_replay(db: Session, match_id: str) -> Replay:
+def _load_replay(db: Session, match_id: str) -> "Replay":
     """Load a replay by ID, raising HTTPException if not found."""
     stmt = select(Replay).where(Replay.replay_id == match_id)
     replay = db.scalars(stmt).first()
@@ -37,7 +37,7 @@ def _load_replay(db: Session, match_id: str) -> Replay:
     return replay
 
 
-def _metrics_to_dict(metrics) -> dict:
+def _metrics_to_dict(metrics: "PlayerMetrics") -> dict:
     """Convert PlayerMetrics dataclass to dict for analyzer methods."""
     return {
         "feudal_ms": metrics.feudal_ms,
@@ -61,7 +61,7 @@ def _metrics_to_dict(metrics) -> dict:
 
 def _build_cohort_context(
     db: Session,
-    player_metrics,
+    player_metrics: "PlayerMetrics",
     elo_band: int | None = None,
     civ: str | None = None,
     map_name: str | None = None,
@@ -162,7 +162,7 @@ def _build_cohort_context(
 async def analyze_decisions(
     match_id: str,
     db: Session = Depends(get_db),
-):
+) -> DVAReportResponse:
     """Analyze decision value added for a match.
 
     Evaluates the quality of strategic decisions (age advancement, build order,
@@ -242,7 +242,7 @@ async def analyze_decisions(
 async def analyze_playstyle(
     match_id: str,
     db: Session = Depends(get_db),
-):
+) -> PlaystyleProfileResponse:
     """Analyze player playstyle and awards.
 
     Classifies the player into one of 9 strategic archetypes (archer rush, castle
@@ -319,7 +319,7 @@ async def analyze_playstyle(
 async def get_radar_visualization(
     match_id: str,
     db: Session = Depends(get_db),
-):
+) -> RadarVisualizationResponse:
     """Get 3D circular APM/attention radar visualization data.
 
     Returns detailed sector and sample data for rendering a 3D polar plot
@@ -407,7 +407,7 @@ async def get_radar_visualization(
 async def get_full_analytics(
     match_id: str,
     db: Session = Depends(get_db),
-):
+) -> MatchInsightsResponse:
     """Get complete analytics package: DVA, playstyle, and radar.
 
     Combines all advanced analytics into a single response for the coaching
