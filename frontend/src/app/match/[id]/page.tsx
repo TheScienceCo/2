@@ -93,32 +93,63 @@ export default function MatchPage({ params }: MatchPageProps) {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        <Card title={`${insights.p1_name} - Decisions`}>
-          {insights.p1_decisions ? (
-            <DVATimeline
-              report={insights.p1_decisions}
-              matchDuration={insights.duration_ms}
-            />
-          ) : (
-            <div className="text-sm text-ink-muted">Analysis unavailable</div>
-          )}
-        </Card>
+      <section className="space-y-8">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Card title={`${insights.p1_name} - Decisions`}>
+            {insights.p1_decisions ? (
+              <DVATimeline
+                report={insights.p1_decisions}
+                matchDuration={insights.duration_ms}
+              />
+            ) : (
+              <div className="text-sm text-ink-muted">Analysis unavailable</div>
+            )}
+          </Card>
 
-        <Card title={`${insights.p1_name} - Playstyle`}>
-          {insights.p1_playstyle ? (
-            <PlaystyleProfile profile={insights.p1_playstyle} />
-          ) : (
-            <div className="text-sm text-ink-muted">Playstyle analysis unavailable</div>
+          <Card title={`${insights.p2_name} - Decisions`}>
+            {insights.p2_decisions ? (
+              <DVATimeline
+                report={insights.p2_decisions}
+                matchDuration={insights.duration_ms}
+              />
+            ) : (
+              <div className="text-sm text-ink-muted">Analysis unavailable</div>
+            )}
+          </Card>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Card title={`${insights.p1_name} - Playstyle`}>
+            {insights.p1_playstyle ? (
+              <PlaystyleProfile profile={insights.p1_playstyle} />
+            ) : (
+              <div className="text-sm text-ink-muted">Playstyle analysis unavailable</div>
+            )}
+          </Card>
+
+          <Card title={`${insights.p2_name} - Playstyle`}>
+            {insights.p2_playstyle ? (
+              <PlaystyleProfile profile={insights.p2_playstyle} />
+            ) : (
+              <div className="text-sm text-ink-muted">Playstyle analysis unavailable</div>
+            )}
+          </Card>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {insights.p1_radar && (
+            <Card title={`${insights.p1_name} - APM Radar`}>
+              <RadarVisualization data={insights.p1_radar} />
+            </Card>
           )}
-        </Card>
+
+          {insights.p2_radar && (
+            <Card title={`${insights.p2_name} - APM Radar`}>
+              <RadarVisualization data={insights.p2_radar} />
+            </Card>
+          )}
+        </div>
       </section>
-
-      {insights.p1_radar && (
-        <Card title={`${insights.p1_name} - APM Radar`}>
-          <RadarVisualization data={insights.p1_radar} />
-        </Card>
-      )}
 
       <Disclaimer>
         These analytics are derived from the replay's command stream.
