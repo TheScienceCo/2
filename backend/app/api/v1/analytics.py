@@ -403,6 +403,168 @@ async def get_radar_visualization(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+async def _analyze_player(
+    replay: "Replay",
+    player_num: int,
+    db: Session,
+) -> tuple[DVAReportResponse | None, PlaystyleProfileResponse | None, RadarVisualizationResponse | None]:
+    """Analyze one player from a loaded replay."""
+    try:
+        if player_num < 1 or player_num > len(replay.players):
+            return None, None, None
+
+        player = replay.players[player_num - 1]
+
+        # Compute metrics
+        metrics_service = MetricsComputeService()
+        all_metrics = metrics_service.compute_from_replay(replay)
+        player_metrics = all_metrics.get(player_num)
+
+        if not player_metrics:
+            return None, None, None
+
+        # Get opponent metrics
+        opponent_num = 3 - player_num  # 1->2, 2->1
+        opponent_metrics = all_metrics.get(opponent_num)
+
+        # Load cohort context
+        cohort = _build_cohort_context(
+            db,
+            player_metrics,
+            elo_band=1400,
+            civ=player_metrics.civilization,
+            map_name=replay.map_name,
+        )
+
+        # DVA Analysis
+        baseline_service = BaselineService(db)
+        analyzer = DVAAnalyzer(baseline_service)
+
+        cohort_context = cohort.copy()
+        for metric_name, baseline_data in cohort["baselines"].items():
+            if baseline_data:
+                cohort_context[f"{metric_name}_baseline"] = baseline_data.get("mean")
+                cohort_context[f"{metric_name}_std"] = baseline_data.get("std")
+        cohort_context["cohort_size"] = sum(
+            b.get("n", 0) for b in cohort["baselines"].values() if b
+        )
+
+        report = analyzer.analyze(
+            metrics=_metrics_to_dict(player_metrics),
+            cohort_context=cohort_context,
+            opponent_metrics=_metrics_to_dict(opponent_metrics) if opponent_metrics else {},
+        )
+
+        decisions_response = [
+            DecisionEvaluationResponse(
+                timestamp_ms=d.timestamp_ms,
+                decision_type=d.decision_type,
+                value_added=d.value_added,
+                confidence=d.confidence,
+                explanation=d.explanation,
+            )
+            for d in report.decisions
+        ]
+
+        dva_response = DVAReportResponse(
+            decisions=decisions_response,
+            total_value_added=report.total_value_added,
+            decision_quality=report.decision_quality,
+            top_decisions=decisions_response[:3] if decisions_response else [],
+            bottom_decisions=list(reversed(decisions_response[-3:])) if decisions_response else [],
+        )
+
+        # Playstyle Analysis
+        playstyle_analyzer = PlaystyleAnalyzer()
+
+        cohort_context_style = cohort.copy()
+        for metric_name, baseline_data in cohort["baselines"].items():
+            if baseline_data:
+                cohort_context_style[f"{metric_name}_baseline"] = baseline_data.get("mean")
+                cohort_context_style[f"{metric_name}_std"] = baseline_data.get("std")
+                cohort_context_style[f"{metric_name}_percentile"] = 50
+
+        profile = playstyle_analyzer.analyze(
+            metrics=_metrics_to_dict(player_metrics),
+            cohort_context=cohort_context_style,
+        )
+
+        awards_response = [
+            PlaystyleAwardResponse(
+                award=award.award,
+                category=award.category,
+                percentile=award.percentile,
+                explanation=award.explanation,
+                rarity=award.rarity,
+            )
+            for award in profile.awards
+        ]
+
+        playstyle_response = PlaystyleProfileResponse(
+            primary_archetype=profile.primary_archetype.value,
+            secondary_archetype=profile.secondary_archetype.value if profile.secondary_archetype else None,
+            archetype_confidence=profile.archetype_confidence,
+            awards=awards_response,
+            strengths=profile.strengths,
+            weaknesses=profile.weaknesses,
+        )
+
+        # Radar Analysis
+        radar_analyzer = RadarAnalyzer()
+        commands = []
+        if replay.analysis and "commands" in replay.analysis.get("players", {}).get(f"player_{player_num}", {}):
+            commands = replay.analysis["players"][f"player_{player_num}"]["commands"]
+
+        viz = radar_analyzer.analyze(
+            commands=commands,
+            match_duration_ms=replay.duration_ms,
+            player_name=player.name,
+        )
+
+        samples_response = [
+            ActionSampleResponse(
+                timestamp_ms=sample.timestamp_ms,
+                intensity=sample.intensity,
+                action_type=sample.action_type,
+                action_count=sample.action_count,
+                color_code=sample.color_code,
+            )
+            for sample in viz.samples
+        ]
+
+        sectors_response = [
+            RadarSectorResponse(
+                time_start_ms=sector.time_start_ms,
+                time_end_ms=sector.time_end_ms,
+                economy_intensity=sector.economy_intensity,
+                military_intensity=sector.military_intensity,
+                scouting_intensity=sector.scouting_intensity,
+                strategy_intensity=sector.strategy_intensity,
+                dominant_action_type=sector.dominant_action_type,
+                total_action_count=sector.total_action_count,
+            )
+            for sector in viz.sectors
+        ]
+
+        radar_response = RadarVisualizationResponse(
+            match_duration_ms=viz.match_duration_ms,
+            player_name=viz.player_name,
+            samples=samples_response,
+            sectors=sectors_response,
+            average_apm=viz.average_apm,
+            peak_apm=viz.peak_apm,
+            focus_distribution=viz.focus_distribution,
+            attention_shifts=viz.attention_shifts,
+            playstyle_signature=viz.playstyle_signature,
+        )
+
+        return dva_response, playstyle_response, radar_response
+
+    except Exception as e:
+        log.warning(f"Analysis for player {player_num} failed: {e}")
+        return None, None, None
+
+
 @router.get("/matches/{match_id}/insights", response_model=MatchInsightsResponse, tags=["analytics"])
 async def get_full_analytics(
     match_id: str,
@@ -420,10 +582,9 @@ async def get_full_analytics(
         if not replay.players or len(replay.players) < 2:
             raise ValueError("Replay must have at least 2 players")
 
-        # Get all analyses from individual endpoints
-        p1_decisions = await analyze_decisions(match_id, db)
-        p1_playstyle = await analyze_playstyle(match_id, db)
-        p1_radar = await get_radar_visualization(match_id, db)
+        # Analyze both players
+        p1_decisions, p1_playstyle, p1_radar = await _analyze_player(replay, 1, db)
+        p2_decisions, p2_playstyle, p2_radar = await _analyze_player(replay, 2, db)
 
         # Determine winner
         p1, p2 = replay.players[0], replay.players[1]
@@ -444,9 +605,9 @@ async def get_full_analytics(
             p1_decisions=p1_decisions,
             p1_playstyle=p1_playstyle,
             p1_radar=p1_radar,
-            p2_decisions=None,
-            p2_playstyle=None,
-            p2_radar=None,
+            p2_decisions=p2_decisions,
+            p2_playstyle=p2_playstyle,
+            p2_radar=p2_radar,
         )
     except HTTPException:
         raise
