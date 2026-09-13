@@ -154,10 +154,15 @@ class DVAAnalyzer:
             ours = metrics.get(f"{age}_ms")
             theirs = opponent.get(f"{age}_ms")
             baseline = cohort.get(f"{age}_baseline_ms")
-            
+
             if not all([ours, theirs, baseline]):
                 continue
-            
+
+            # Type guards
+            assert isinstance(ours, (int, float)) and ours is not None
+            assert isinstance(theirs, (int, float)) and theirs is not None
+            assert isinstance(baseline, (int, float)) and baseline is not None
+
             # Value added: how much faster than opponent relative to peer baseline
             peer_gap = baseline - ours  # Positive = faster than peers
             our_gap = theirs - ours  # Positive = we're faster
@@ -172,7 +177,7 @@ class DVAAnalyzer:
             
             decisions.append(
                 DecisionEvaluation(
-                    timestamp_ms=ours,
+                    timestamp_ms=int(ours),
                     decision_type=f"age_advance/{age}",
                     value_added=value,
                     confidence=confidence,
