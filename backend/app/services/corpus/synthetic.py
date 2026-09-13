@@ -43,14 +43,23 @@ OPENINGS = ["scouts", "archers", "men_at_arms", "drush", "fast_castle", "tower_r
 ELO_BANDS = [800, 1000, 1200, 1400, 1600, 1800, 2000, 2400]
 
 
-def _skill(rating: float) -> float:
-    """Map a rating onto 0..1, so behaviour can be scaled by it."""
-    return float(np.clip((rating - 800) / 1400, 0.0, 1.0))
+def _skill(rating: float, execution: float = 0.0) -> float:
+    """Map a rating onto 0..1, so behaviour can be scaled by it.
+
+    `execution` is a per-player residual independent of rating: two players
+    at the same rating can still execute differently, and it is that
+    within-band variation the ladder analysis exists to find. Without it the
+    generated corpus would have Elo-to-behaviour structure but no
+    behaviour-to-outcome structure, and no method could recover anything.
+    """
+    return float(np.clip((rating - 800) / 1400 + execution, 0.0, 1.0))
 
 
-def _age_uptimes(rng: np.random.Generator, rating: float) -> tuple[float, float, float]:
+def _age_uptimes(
+    rng: np.random.Generator, rating: float, execution: float = 0.0
+) -> tuple[float, float, float]:
     """Age-up times in seconds. Stronger players are faster, with real spread."""
-    s = _skill(rating)
+    s = _skill(rating, execution)
     feudal = rng.normal(760 - 130 * s, 55)
     castle = feudal + rng.normal(620 - 120 * s, 75)
     imperial = castle + rng.normal(900 - 200 * s, 130)
@@ -73,14 +82,16 @@ def _opening(rng: np.random.Generator, rating: float) -> str:
     return str(rng.choice(OPENINGS, p=weights / weights.sum()))
 
 
-def _replay_summary(rng: np.random.Generator, rating: float, duration: int) -> str:
+def _replay_summary(
+    rng: np.random.Generator, rating: float, duration: int, execution: float = 0.0
+) -> str:
     """Per-age counts of what was trained, built and researched.
 
     Shaped like the publisher's `replay_summary_raw`: a nested mapping of age to
     entity id to count. Ids are real ones from the cost tables so that spend
     computed from this is computed the same way it would be from a real dump.
     """
-    s = _skill(rating)
+    s = _skill(rating, execution)
     minutes = duration / 60
     ages: dict[str, dict[str, dict[str, int]]] = {}
 
@@ -151,8 +162,12 @@ def generate(
             float(np.clip(rng.normal(table, 70), 400, 2800)),
             float(np.clip(rng.normal(table, 70), 400, 2800)),
         ]
-        # Stronger player wins more often, but far from always.
-        edge = (ratings[0] - ratings[1]) / 400
+        # Execution residuals, independent of rating. These drive both how
+        # each player behaves and who wins, so within a band - where ratings are
+        # nearly equal - behaviour is what separates the winner.
+        execution = rng.normal(0, 0.16, size=2)
+
+        edge = (ratings[0] - ratings[1]) / 400 + (execution[0] - execution[1]) * 3.0
         p0_wins = rng.random() < 1 / (1 + np.exp(-edge))
 
         num_players = 2
@@ -200,12 +215,12 @@ def generate(
                 row["old_rating"] = 99999.0  # impossible rating
 
             if enhanced:
-                feudal, castle, imperial = _age_uptimes(rng, rating)
+                feudal, castle, imperial = _age_uptimes(rng, rating, execution[slot])
                 row["feudal_age_uptime"] = round(feudal, 1)
                 row["castle_age_uptime"] = round(castle, 1) if castle < duration else None
                 row["imperial_age_uptime"] = round(imperial, 1) if imperial < duration else None
                 row["opening"] = _opening(rng, rating)
-                row["replay_summary_raw"] = _replay_summary(rng, rating, duration)
+                row["replay_summary_raw"] = _replay_summary(rng, rating, duration, execution[slot])
             else:
                 for absent in (
                     "feudal_age_uptime",
