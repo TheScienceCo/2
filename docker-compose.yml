@@ -1,0 +1,119 @@
+# AoE2 Lab — full local stack.
+#
+#   cp .env.example .env
+#   docker compose up --build
+#   curl -F file=@game.aoe2record localhost:8000/api/v1/replays
+#
+# Postgres, Redis and the replay store carry named volumes so uploaded replays
+# and their analyses survive a restart. The api and worker share both the image
+# and the replay volume.
+
+name: aoe2
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aoe2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aoe2}
+      POSTGRES_DB: ${POSTGRES_DB:-aoe2}
+      # Cuts a meaningful amount of time off timeline bulk inserts and is safe
+      # for a development database.
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c work_mem=32MB
+      -c max_wal_size=2GB
+      -c synchronous_commit=off
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aoe2} -d ${POSTGRES_DB:-aoe2}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: [.env]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-aoe2}:${POSTGRES_PASSWORD:-aoe2}@postgres:5432/${POSTGRES_DB:-aoe2}
+      REDIS_URL: redis://redis:6379/0
+      REPLAY_STORAGE_PATH: /data/replays
+    # Migrations run on start so a fresh clone needs no extra step.
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers"
+    volumes:
+      - replay_data:/data/replays
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: [.env]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-aoe2}:${POSTGRES_PASSWORD:-aoe2}@postgres:5432/${POSTGRES_DB:-aoe2}
+      REDIS_URL: redis://redis:6379/0
+      REPLAY_STORAGE_PATH: /data/replays
+    # Reserved for work that should not share a process with request handling
+    # (bulk re-analysis when a metric changes, model training). Nothing runs
+    # here yet - replay analysis is fast enough to do inline on upload.
+    command: ["sleep", "infinity"]
+    volumes:
+      - replay_data:/data/replays
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      NODE_ENV: production
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      api: {condition: service_started}
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  replay_data:
