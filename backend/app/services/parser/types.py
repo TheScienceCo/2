@@ -39,6 +39,7 @@ class CommandType(str, Enum):
 
     QUEUE_UNIT = "queue_unit"
     BUILD = "build"
+    WALL = "wall"
     RESEARCH = "research"
     AGE_UP = "age_up"
     TRIBUTE = "tribute"
@@ -58,6 +59,22 @@ class Command:
     player_number: int
     type: CommandType
     payload: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class ViewportSample:
+    """Where the recording player's camera was, at a moment.
+
+    Only the player who saved the replay has a camera in the file - a replay
+    records one perspective, not everyone's. `ParsedReplay.viewport_player`
+    says whose. For anyone else this is empty, and attention metrics are
+    `UNAVAILABLE` rather than guessed at.
+    """
+
+    timestamp_ms: int
+    #: Map tile coordinates, same space as BUILD command x/y.
+    x: float
+    y: float
 
 
 @dataclass(frozen=True)
@@ -100,6 +117,10 @@ class ParsedReplay:
     players: list[ParsedPlayer]
     commands: list[Command]
     resource_samples: list[ResourceSample]
+    #: Camera positions for `viewport_player`, in time order.
+    viewport: list[ViewportSample] = field(default_factory=list)
+    #: The player number whose camera `viewport` describes, or None.
+    viewport_player: int | None = None
     postgame: dict[str, Any] | None = None
     #: Non-fatal problems encountered while parsing (truncated body, unknown
     #: actions). The analysis still runs; the report surfaces these.
@@ -110,6 +131,9 @@ class ParsedReplay:
 
     def samples_for(self, player_number: int) -> list[ResourceSample]:
         return [s for s in self.resource_samples if s.player_number == player_number]
+
+    def has_viewport_for(self, player_number: int) -> bool:
+        return bool(self.viewport) and self.viewport_player == player_number
 
 
 class ReplayParseError(Exception):

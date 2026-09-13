@@ -13,6 +13,7 @@ and the analysis marks the dependent metrics `UNAVAILABLE`.
 from __future__ import annotations
 
 import io
+import struct
 from datetime import timedelta
 from typing import Any
 
@@ -25,6 +26,7 @@ from app.services.parser.types import (
     ParsedReplay,
     ReplayParseError,
     ResourceSample,
+    ViewportSample,
 )
 
 log = get_logger(__name__)
@@ -80,7 +82,11 @@ class MgzReplayParser:
                 "production metrics (villager uptime, TC idle time) are unavailable."
             )
 
+        viewport, viewport_player = self._viewport(data)
+
         return ParsedReplay(
+            viewport=viewport,
+            viewport_player=viewport_player,
             map_name=getattr(match.map, "name", None),
             map_size=getattr(match.map, "size", None),
             duration_ms=_ms(match.duration),
@@ -157,7 +163,8 @@ class MgzReplayParser:
             payload = action.payload or {}
             ts = _ms(action.timestamp)
 
-            command = self._to_command(type_name, ts, player.number, payload)
+            position = getattr(action, "position", None)
+            command = self._to_command(type_name, ts, player.number, payload, position)
             if command is None:
                 continue
             if command.type is CommandType.QUEUE_UNIT:
@@ -167,7 +174,12 @@ class MgzReplayParser:
         return out, queue_seen, (errors / total if total else 0.0)
 
     def _to_command(
-        self, type_name: str, ts: int, player_number: int, payload: dict
+        self,
+        type_name: str,
+        ts: int,
+        player_number: int,
+        payload: dict,
+        position: Any = None,
     ) -> Command | None:
         """Map one raw mgz action onto our normalised command vocabulary.
 
@@ -231,6 +243,25 @@ class MgzReplayParser:
                 },
             )
 
+        if type_name == "WALL":
+            # A wall command places a run of segments between two points, so one
+            # command is many tiles. Chebyshev distance is the tile count, since
+            # walls step diagonally.
+            x = payload.get("x", getattr(position, "x", None))
+            y = payload.get("y", getattr(position, "y", None))
+            x_end, y_end = payload.get("x_end"), payload.get("y_end")
+            tiles = None
+            corners = (x, y, x_end, y_end)
+            if all(isinstance(v, int | float) for v in corners):
+                x0, y0, x1, y1 = (int(v) for v in corners)  # type: ignore[arg-type]
+                tiles = max(abs(x1 - x0), abs(y1 - y0)) + 1
+            return Command(
+                ts,
+                player_number,
+                CommandType.WALL,
+                {"x": x, "y": y, "x_end": x_end, "y_end": y_end, "tiles": tiles},
+            )
+
         if type_name == "DELETE":
             return Command(ts, player_number, CommandType.DELETE, {})
         if type_name == "BUY":
@@ -265,6 +296,53 @@ class MgzReplayParser:
                 )
         out.sort(key=lambda s: (s.timestamp_ms, s.player_number))
         return out
+
+    def _viewport(self, data: bytes) -> tuple[list[ViewportSample], int | None]:
+        """Camera positions, from a second pass over the raw command stream.
+
+        `mgz.model` decodes viewlocks but does not expose them on `Match`, so
+        this walks the body directly. A replay holds exactly one perspective -
+        whoever saved it - so this is that player's camera and nobody else's.
+
+        Best-effort: a stream that will not decode yields no viewport, and the
+        dependent metrics report unavailable rather than failing the parse.
+        """
+        import io
+
+        import mgz.fast as fast
+        from mgz.fast.header import parse as parse_header
+
+        try:
+            handle = io.BytesIO(data)
+            header = parse_header(handle)
+            handle.seek(handle.tell() - 4)  # step back over the log version
+            fast.meta(handle)
+            owner = header.get("metadata", {}).get("owner_id")
+        except Exception as exc:
+            log.warning("viewport.header_failed", error=str(exc))
+            return [], None
+
+        samples: list[ViewportSample] = []
+        timestamp = 0
+        previous: tuple[float, float] | None = None
+        try:
+            while True:
+                op_type, payload = fast.operation(handle)
+                if op_type is fast.Operation.SYNC:
+                    timestamp += payload[0]
+                # The camera emits on every sync; keep only real movements.
+                elif op_type is fast.Operation.VIEWLOCK and payload != previous:
+                    samples.append(ViewportSample(timestamp, payload[0], payload[1]))
+                    previous = payload
+        except EOFError:
+            pass  # the expected end of the stream
+        except (struct.error, RuntimeError, ValueError) as exc:
+            # A stream we cannot follow any further. What we gathered is still
+            # valid, but say so - a silent empty result is indistinguishable
+            # from a replay that genuinely has no camera data.
+            log.warning("viewport.stream_truncated", at_ms=timestamp, error=str(exc))
+
+        return samples, (int(owner) if isinstance(owner, int) else None)
 
     def _postgame(self, match: Any) -> dict[str, Any] | None:
         pg = getattr(match, "postgame", None)

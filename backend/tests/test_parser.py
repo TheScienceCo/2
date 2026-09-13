@@ -128,3 +128,46 @@ def test_parsing_is_deterministic(parser, rec_with_queue):
         (c.timestamp_ms, c.type, c.payload) for c in b.commands
     ]
     assert a.resource_samples == b.resource_samples
+
+
+class TestViewport:
+    """Camera positions, which the attention metrics are built on."""
+
+    def test_viewport_extracted_for_recording_player(self, parser, rec_with_queue):
+        r = parser.parse(rec_with_queue)
+        assert r.viewport_player is not None
+        assert len(r.viewport) > 100
+        assert r.has_viewport_for(r.viewport_player)
+
+    def test_viewport_is_time_ordered(self, parser, rec_with_queue):
+        r = parser.parse(rec_with_queue)
+        stamps = [v.timestamp_ms for v in r.viewport]
+        assert stamps == sorted(stamps)
+
+    def test_viewport_only_covers_one_player(self, parser, rec_with_queue):
+        """A replay holds one perspective, so nobody else has a camera."""
+        r = parser.parse(rec_with_queue)
+        others = [p.player_number for p in r.players if p.player_number != r.viewport_player]
+        assert others
+        assert all(not r.has_viewport_for(n) for n in others)
+
+    def test_consecutive_duplicates_are_dropped(self, parser, rec_with_queue):
+        """The camera emits every sync; only real movements are kept."""
+        r = parser.parse(rec_with_queue)
+        pairs = [(v.x, v.y) for v in r.viewport]
+        assert all(a != b for a, b in zip(pairs, pairs[1:], strict=False))
+
+    def test_positions_are_within_the_map(self, parser, rec_with_queue):
+        r = parser.parse(rec_with_queue)
+        assert all(0 <= v.x < 500 and 0 <= v.y < 500 for v in r.viewport)
+
+
+class TestWalls:
+    def test_wall_commands_carry_a_tile_count(self, parser, rec_with_queue):
+        r = parser.parse(rec_with_queue)
+        walls = [c for c in r.commands if c.type is CommandType.WALL]
+        assert walls
+        # One command lays a run of segments, so tiles exceed command count.
+        counted = [c.payload["tiles"] for c in walls if c.payload["tiles"] is not None]
+        assert counted and sum(counted) >= len(counted)
+        assert all(t >= 1 for t in counted)
