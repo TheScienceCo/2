@@ -1,8 +1,6 @@
 # AoE2 Lab
 
-Upload an Age of Empires II: Definitive Edition replay and get your age timings
-against your opponent's, a curve of everything you left unspent, your build
-order, and observations that each cite a number that was actually measured.
+Upload an Age of Empires II: Definitive Edition replay and get ridiculously advanced stats, ways to identify your own unique strengths and weaknesses to endow you with performance-enhancing knowledge to give you an edge over opponents, and other simply cool data for AOE 2 players. Stats include optimal uptime analysis based on your chosen build order/strategy vs your opponents, and unique insights into your play (and other's) that produce quantifiable, measurable stats uniquely derived from processing large amount of replays (credit to aoestats.io for providing much of the basic corpus that formed the foundation from which we optimized our own formulas and never be
 
 ```bash
 cp .env.example .env
