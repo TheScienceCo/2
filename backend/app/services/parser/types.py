@@ -32,6 +32,16 @@ class Availability(str, Enum):
     INFERRED = "inferred"
     #: Not recoverable from a replay file. Never render a number for these.
     UNAVAILABLE = "unavailable"
+    #: Computed by an external publisher (aoestats.io) from their own replay
+    #: pipeline, not by us. Kept distinct from OBSERVED because we cannot audit
+    #: how it was derived and their pipeline may disagree with ours.
+    EXTERNAL_DERIVED = "external_derived"
+    #: A label assigned by an external publisher. Usable as a stratifier, never
+    #: as ground truth.
+    EXTERNAL_LABEL = "external_label"
+    #: Derived under a stated modelling assumption that biases it in a known
+    #: direction. The assumption travels with the number.
+    PROXY = "proxy"
 
 
 class CommandType(str, Enum):

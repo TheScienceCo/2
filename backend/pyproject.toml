@@ -17,6 +17,15 @@ dependencies = [
     # Replay parsing. `mgz` pulls in `aocref`, which ships the object and
     # technology tables that IDs are resolved against.
     "mgz>=1.8.0",
+    "httpx>=0.27.0",
+    # aoestats dumps ship as parquet; pandas is the analysis surface over them
+    # and over the feature frames the models train on.
+    "pandas>=2.2.0",
+    "pyarrow>=17.0.0",
+    "numpy>=1.26.0",
+    "scikit-learn>=1.5.0",
+    "lightgbm>=4.5.0",
+    "shap>=0.46.0",
 ]
 
 [project.optional-dependencies]
@@ -27,14 +36,9 @@ dev = [
     "ruff>=0.6.0",
     "mypy>=1.11.0",
 ]
-# Not used by any code path yet. Listed so the intended ML direction is
-# explicit; installed only on request.
-ml = [
-    "numpy>=1.26.0",
-    "pandas>=2.2.0",
-    "scikit-learn>=1.5.0",
-    "xgboost>=2.1.0",
-]
+# An alternative gradient-boosting backend. The training code is written
+# against a small protocol so this is a drop-in for LightGBM.
+xgboost = ["xgboost>=2.1.0"]
 
 [build-system]
 requires = ["setuptools>=69"]

@@ -1,0 +1,3787 @@
+{
+ "buildings": {
+  "101": {
+   "cost": {
+    "wood": 175
+   },
+   "name": "STBL",
+   "train_time": 50
+  },
+  "1021": {
+   "cost": {
+    "gold": 350,
+    "stone": 300
+   },
+   "name": "FEITO",
+   "train_time": 120
+  },
+  "103": {
+   "cost": {
+    "wood": 150
+   },
+   "name": "BLAC",
+   "train_time": 40
+  },
+  "104": {
+   "cost": {
+    "wood": 175
+   },
+   "name": "CRCH",
+   "train_time": 40
+  },
+  "109": {
+   "cost": {
+    "stone": 100,
+    "wood": 275
+   },
+   "name": "RTWC",
+   "train_time": 100
+  },
+  "117": {
+   "cost": {
+    "stone": 5
+   },
+   "name": "WALL2",
+   "train_time": 10
+  },
+  "1189": {
+   "cost": {
+    "wood": 150
+   },
+   "name": "HARBOR",
+   "train_time": 35
+  },
+  "12": {
+   "cost": {
+    "wood": 175
+   },
+   "name": "Barracks Age1",
+   "train_time": 50
+  },
+  "1251": {
+   "cost": {
+    "stone": 350
+   },
+   "name": "KREPOST",
+   "train_time": 150
+  },
+  "155": {
+   "cost": {
+    "stone": 5
+   },
+   "name": "WALL3",
+   "train_time": 10
+  },
+  "1665": {
+   "cost": {
+    "stone": 175,
+    "wood": 50
+   },
+   "name": "DONJON",
+   "train_time": 125
+  },
+  "1734": {
+   "cost": {
+    "wood": 100
+   },
+   "name": "FOLWARK1",
+   "train_time": 40
+  },
+  "1754": {
+   "cost": {
+    "stone": 50,
+    "wood": 175
+   },
+   "name": "CARAVANSERAI",
+   "train_time": 60
+  },
+  "1806": {
+   "cost": {
+    "wood": 200
+   },
+   "name": "FORTCRCH",
+   "train_time": 40
+  },
+  "1808": {
+   "cost": {
+    "food": 20,
+    "wood": 80
+   },
+   "name": "MULECART",
+   "train_time": 25
+  },
+  "1889": {
+   "cost": {
+    "wood": 110
+   },
+   "name": "PASTURE_BUILD",
+   "train_time": 22
+  },
+  "199": {
+   "cost": {
+    "wood": 100
+   },
+   "name": "FTRAP",
+   "train_time": 40
+  },
+  "209": {
+   "cost": {
+    "wood": 200
+   },
+   "name": "UNIV",
+   "train_time": 60
+  },
+  "234": {
+   "cost": {
+    "stone": 125,
+    "wood": 35
+   },
+   "name": "WCTW2",
+   "train_time": 80
+  },
+  "235": {
+   "cost": {
+    "stone": 125,
+    "wood": 35
+   },
+   "name": "WCTW3",
+   "train_time": 80
+  },
+  "236": {
+   "cost": {
+    "gold": 100,
+    "stone": 125,
+    "wood": 0
+   },
+   "name": "WCTW4",
+   "train_time": 80
+  },
+  "2556": {
+   "cost": {
+    "wood": 125
+   },
+   "name": "SETTL1",
+   "train_time": 40
+  },
+  "276": {
+   "cost": {
+    "gold": 1000,
+    "stone": 1000,
+    "wood": 1000
+   },
+   "name": "WNDR",
+   "train_time": 3500
+  },
+  "45": {
+   "cost": {
+    "wood": 150
+   },
+   "name": "DOCK",
+   "train_time": 35
+  },
+  "487": {
+   "cost": {
+    "stone": 30
+   },
+   "name": "GTAX2",
+   "train_time": 70
+  },
+  "49": {
+   "cost": {
+    "wood": 200
+   },
+   "name": "SIWS",
+   "train_time": 40
+  },
+  "50": {
+   "cost": {
+    "wood": 60
+   },
+   "name": "FARM",
+   "train_time": 15
+  },
+  "562": {
+   "cost": {
+    "wood": 100
+   },
+   "name": "SMIL",
+   "train_time": 35
+  },
+  "584": {
+   "cost": {
+    "wood": 100
+   },
+   "name": "MINE",
+   "train_time": 35
+  },
+  "598": {
+   "cost": {
+    "stone": 5,
+    "wood": 25
+   },
+   "name": "WCTWX",
+   "train_time": 15
+  },
+  "621": {
+   "cost": {
+    "stone": 100,
+    "wood": 275
+   },
+   "name": "RTWC1X",
+   "train_time": 150
+  },
+  "68": {
+   "cost": {
+    "wood": 100
+   },
+   "name": "MILL",
+   "train_time": 35
+  },
+  "70": {
+   "cost": {
+    "wood": 25
+   },
+   "name": "HOUS",
+   "train_time": 25
+  },
+  "71": {
+   "cost": {
+    "stone": 100,
+    "wood": 275
+   },
+   "name": "RTWC2",
+   "train_time": 100
+  },
+  "72": {
+   "cost": {
+    "wood": 3
+   },
+   "name": "WALL",
+   "train_time": 7
+  },
+  "79": {
+   "cost": {
+    "stone": 125,
+    "wood": 35
+   },
+   "name": "WCTW",
+   "train_time": 80
+  },
+  "792": {
+   "cost": {
+    "wood": 30
+   },
+   "name": "PGTAX",
+   "train_time": 30
+  },
+  "82": {
+   "cost": {
+    "stone": 650,
+    "wood": 0
+   },
+   "name": "CSTL",
+   "train_time": 200
+  },
+  "84": {
+   "cost": {
+    "wood": 175
+   },
+   "name": "MRKT",
+   "train_time": 60
+  },
+  "87": {
+   "cost": {
+    "wood": 175
+   },
+   "name": "ARRG",
+   "train_time": 50
+  }
+ },
+ "note": "Extracted cost/name/time fields only. Game data is Microsoft's.",
+ "snapshot_taken": "2026-09-13",
+ "source": "https://github.com/SiegeEngineers/aoe2techtree",
+ "source_file": "data/data.json",
+ "techs": {
+  "10": {
+   "cost": {
+    "food": 600,
+    "gold": 650
+   },
+   "name": "Turkish Artillery",
+   "research_time": 40
+  },
+  "1006": {
+   "cost": {
+    "food": 450,
+    "gold": 300
+   },
+   "name": "Lamellar Armor",
+   "research_time": 45
+  },
+  "1007": {
+   "cost": {
+    "food": 600,
+    "gold": 300
+   },
+   "name": "Ordo Cavalry",
+   "research_time": 45
+  },
+  "101": {
+   "cost": {
+    "food": 500
+   },
+   "name": "Middle Age",
+   "research_time": 130
+  },
+  "1012": {
+   "cost": {
+    "food": 175,
+    "wood": 325
+   },
+   "name": "Grazing Grasslands",
+   "research_time": 70
+  },
+  "1013": {
+   "cost": {
+    "food": 100,
+    "wood": 150
+   },
+   "name": "Enclosures",
+   "research_time": 40
+  },
+  "1014": {
+   "cost": {
+    "food": 50,
+    "wood": 100
+   },
+   "name": "Livestock Husbandry",
+   "research_time": 20
+  },
+  "102": {
+   "cost": {
+    "food": 800,
+    "gold": 200
+   },
+   "name": "Feudal Age",
+   "research_time": 160
+  },
+  "103": {
+   "cost": {
+    "food": 1000,
+    "gold": 800
+   },
+   "name": "Imperial Age",
+   "research_time": 190
+  },
+  "1061": {
+   "cost": {
+    "food": 250,
+    "wood": 300
+   },
+   "name": "Tuntian",
+   "research_time": 40
+  },
+  "1062": {
+   "cost": {
+    "food": 600,
+    "gold": 450
+   },
+   "name": "Ming-Kuang Armor",
+   "research_time": 65
+  },
+  "1069": {
+   "cost": {
+    "food": 650,
+    "gold": 750
+   },
+   "name": "Bolt Magazine",
+   "research_time": 40
+  },
+  "1070": {
+   "cost": {
+    "food": 350,
+    "gold": 300
+   },
+   "name": "Coiled Serpent Array",
+   "research_time": 40
+  },
+  "1080": {
+   "cost": {
+    "food": 400,
+    "gold": 250
+   },
+   "name": "Red Cliffs Tactics",
+   "research_time": 40
+  },
+  "1081": {
+   "cost": {
+    "gold": 300,
+    "wood": 600
+   },
+   "name": "Ming-Kuang Armor",
+   "research_time": 40
+  },
+  "11": {
+   "cost": {
+    "food": 600,
+    "stone": 400
+   },
+   "name": "Teuton Crenellations",
+   "research_time": 60
+  },
+  "12": {
+   "cost": {
+    "food": 250,
+    "wood": 250
+   },
+   "name": "Crop rotation",
+   "research_time": 70
+  },
+  "13": {
+   "cost": {
+    "food": 125,
+    "wood": 125
+   },
+   "name": "Heavy plow",
+   "research_time": 40
+  },
+  "1365": {
+   "cost": {
+    "food": 300,
+    "gold": 350
+   },
+   "name": "Herbalism",
+   "research_time": 40
+  },
+  "1366": {
+   "cost": {
+    "gold": 350,
+    "wood": 450
+   },
+   "name": "Huaracas",
+   "research_time": 45
+  },
+  "1379": {
+   "cost": {
+    "food": 300,
+    "gold": 350
+   },
+   "name": "Malon",
+   "research_time": 40
+  },
+  "1380": {
+   "cost": {
+    "food": 500,
+    "gold": 450
+   },
+   "name": "Butalmapu",
+   "research_time": 45
+  },
+  "1392": {
+   "cost": {
+    "food": 400,
+    "gold": 200
+   },
+   "name": "Caciques",
+   "research_time": 45
+  },
+  "1393": {
+   "cost": {
+    "food": 650,
+    "gold": 600
+   },
+   "name": "Curare",
+   "research_time": 45
+  },
+  "14": {
+   "cost": {
+    "food": 75,
+    "wood": 75
+   },
+   "name": "Horse collar",
+   "research_time": 20
+  },
+  "140": {
+   "cost": {
+    "food": 100,
+    "wood": 250
+   },
+   "name": "Guard Tower",
+   "research_time": 30
+  },
+  "1404": {
+   "cost": {
+    "food": 250,
+    "wood": 150
+   },
+   "name": "Circumnavigation",
+   "research_time": 40
+  },
+  "15": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Guilds",
+   "research_time": 50
+  },
+  "16": {
+   "cost": {
+    "food": 450,
+    "gold": 250
+   },
+   "name": "Gothic Anarchy",
+   "research_time": 40
+  },
+  "17": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Banking",
+   "research_time": 70
+  },
+  "182": {
+   "cost": {
+    "food": 175,
+    "wood": 75
+   },
+   "name": "Gold Shaft Mining",
+   "research_time": 75
+  },
+  "19": {
+   "cost": {
+    "food": 0,
+    "gold": 0
+   },
+   "name": "Cartography",
+   "research_time": 1
+  },
+  "194": {
+   "cost": {
+    "food": 200,
+    "wood": 100
+   },
+   "name": "Fortified Wall",
+   "research_time": 50
+  },
+  "199": {
+   "cost": {
+    "food": 100,
+    "gold": 50
+   },
+   "name": "Fletching",
+   "research_time": 30
+  },
+  "200": {
+   "cost": {
+    "food": 200,
+    "gold": 100
+   },
+   "name": "Bodkin Arrow",
+   "research_time": 35
+  },
+  "201": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Bracer",
+   "research_time": 40
+  },
+  "202": {
+   "cost": {
+    "food": 100,
+    "wood": 50
+   },
+   "name": "Double Bit Axe",
+   "research_time": 25
+  },
+  "203": {
+   "cost": {
+    "food": 150,
+    "wood": 100
+   },
+   "name": "Bow Saw",
+   "research_time": 50
+  },
+  "21": {
+   "cost": {
+    "food": 500,
+    "wood": 300
+   },
+   "name": "Hun Atheism",
+   "research_time": 60
+  },
+  "211": {
+   "cost": {
+    "food": 100
+   },
+   "name": "Padded Archer Armor",
+   "research_time": 40
+  },
+  "212": {
+   "cost": {
+    "food": 150,
+    "gold": 150
+   },
+   "name": "Leather Archer Armor",
+   "research_time": 55
+  },
+  "213": {
+   "cost": {
+    "food": 175,
+    "wood": 50
+   },
+   "name": "Wheel Barrow",
+   "research_time": 75
+  },
+  "215": {
+   "cost": {
+    "food": 100
+   },
+   "name": "Squires",
+   "research_time": 40
+  },
+  "219": {
+   "cost": {
+    "food": 250,
+    "gold": 250
+   },
+   "name": "Ring Archer Armor",
+   "research_time": 70
+  },
+  "22": {
+   "cost": {
+    "gold": 50
+   },
+   "name": "Loom",
+   "research_time": 25
+  },
+  "221": {
+   "cost": {
+    "food": 300,
+    "wood": 200
+   },
+   "name": "Two Man Saw",
+   "research_time": 100
+  },
+  "23": {
+   "cost": {
+    "food": 200,
+    "gold": 100
+   },
+   "name": "Coinage",
+   "research_time": 70
+  },
+  "230": {
+   "cost": {
+    "food": 0,
+    "gold": 200
+   },
+   "name": "Block Printing",
+   "research_time": 55
+  },
+  "231": {
+   "cost": {
+    "food": 0,
+    "gold": 175
+   },
+   "name": "Sanctity",
+   "research_time": 60
+  },
+  "233": {
+   "cost": {
+    "food": 0,
+    "gold": 120
+   },
+   "name": "Illumination",
+   "research_time": 65
+  },
+  "24": {
+   "cost": {
+    "food": 450,
+    "gold": 750
+   },
+   "name": "Aztec Garland Wars",
+   "research_time": 60
+  },
+  "249": {
+   "cost": {
+    "food": 300,
+    "wood": 200
+   },
+   "name": "Hand Cart",
+   "research_time": 55
+  },
+  "252": {
+   "cost": {
+    "food": 0,
+    "gold": 140
+   },
+   "name": "Fervor",
+   "research_time": 50
+  },
+  "278": {
+   "cost": {
+    "food": 100,
+    "wood": 75
+   },
+   "name": "Stone Mining",
+   "research_time": 30
+  },
+  "279": {
+   "cost": {
+    "food": 175,
+    "wood": 75
+   },
+   "name": "Stone Shaft Mining",
+   "research_time": 75
+  },
+  "28": {
+   "cost": {
+    "gold": 200,
+    "wood": 300
+   },
+   "name": "Bimaristan",
+   "research_time": 50
+  },
+  "280": {
+   "cost": {
+    "food": 300,
+    "gold": 100
+   },
+   "name": "Town Patrol",
+   "research_time": 40
+  },
+  "3": {
+   "cost": {
+    "gold": 450,
+    "wood": 750
+   },
+   "name": "British Yeoman",
+   "research_time": 60
+  },
+  "315": {
+   "cost": {
+    "food": 150,
+    "gold": 150
+   },
+   "name": "Conscription",
+   "research_time": 60
+  },
+  "316": {
+   "cost": {
+    "food": 0,
+    "gold": 475
+   },
+   "name": "Redemption",
+   "research_time": 50
+  },
+  "319": {
+   "cost": {
+    "food": 0,
+    "gold": 325
+   },
+   "name": "Atonement",
+   "research_time": 40
+  },
+  "321": {
+   "cost": {
+    "food": 400,
+    "wood": 200
+   },
+   "name": "Sappers",
+   "research_time": 10
+  },
+  "322": {
+   "cost": {
+    "food": 200,
+    "stone": 100
+   },
+   "name": "Murder Holes",
+   "research_time": 35
+  },
+  "34": {
+   "cost": {
+    "gold": 100,
+    "wood": 150
+   },
+   "name": "War Galley",
+   "research_time": 50
+  },
+  "35": {
+   "cost": {
+    "gold": 315,
+    "wood": 400
+   },
+   "name": "Galleon",
+   "research_time": 65
+  },
+  "373": {
+   "cost": {
+    "food": 1000,
+    "gold": 300
+   },
+   "name": "Shipwright",
+   "research_time": 60
+  },
+  "374": {
+   "cost": {
+    "food": 100,
+    "gold": 200
+   },
+   "name": "Careening",
+   "research_time": 50
+  },
+  "375": {
+   "cost": {
+    "food": 200,
+    "gold": 400
+   },
+   "name": "Dry Dock",
+   "research_time": 60
+  },
+  "377": {
+   "cost": {
+    "food": 500,
+    "wood": 600
+   },
+   "name": "Siege Engineers",
+   "research_time": 45
+  },
+  "379": {
+   "cost": {
+    "food": 400,
+    "wood": 400
+   },
+   "name": "Hoardings",
+   "research_time": 75
+  },
+  "380": {
+   "cost": {
+    "food": 350,
+    "gold": 100
+   },
+   "name": "Heated Shot",
+   "research_time": 30
+  },
+  "39": {
+   "cost": {
+    "food": 150
+   },
+   "name": "Husbandry",
+   "research_time": 40
+  },
+  "4": {
+   "cost": {
+    "food": 750,
+    "gold": 450
+   },
+   "name": "Mayan El Dorado",
+   "research_time": 70
+  },
+  "408": {
+   "cost": {
+    "gold": 200
+   },
+   "name": "Spy Technology",
+   "research_time": 1
+  },
+  "435": {
+   "cost": {
+    "food": 150,
+    "gold": 100
+   },
+   "name": "Bloodlines",
+   "research_time": 50
+  },
+  "436": {
+   "cost": {
+    "food": 200,
+    "gold": 250
+   },
+   "name": "Parthian Tactics",
+   "research_time": 65
+  },
+  "437": {
+   "cost": {
+    "food": 300,
+    "wood": 250
+   },
+   "name": "Thumb Ring",
+   "research_time": 45
+  },
+  "438": {
+   "cost": {
+    "food": 0,
+    "gold": 200
+   },
+   "name": "Theocracy",
+   "research_time": 75
+  },
+  "439": {
+   "cost": {
+    "food": 0,
+    "gold": 1000
+   },
+   "name": "Heresy",
+   "research_time": 60
+  },
+  "440": {
+   "cost": {
+    "food": 400,
+    "gold": 250
+   },
+   "name": "Spanish Supremacy",
+   "research_time": 60
+  },
+  "441": {
+   "cost": {
+    "food": 0,
+    "gold": 200
+   },
+   "name": "Herbal Medicine",
+   "research_time": 35
+  },
+  "445": {
+   "cost": {
+    "food": 1100,
+    "gold": 800
+   },
+   "name": "Korean catapults",
+   "research_time": 60
+  },
+  "45": {
+   "cost": {
+    "food": 550,
+    "gold": 750
+   },
+   "name": "Faith",
+   "research_time": 60
+  },
+  "454": {
+   "cost": {
+    "food": 650,
+    "gold": 500
+   },
+   "name": "Counterweights",
+   "research_time": 50
+  },
+  "455": {
+   "cost": {
+    "gold": 200,
+    "wood": 400
+   },
+   "name": "Detinets",
+   "research_time": 40
+  },
+  "457": {
+   "cost": {
+    "gold": 600,
+    "wood": 400
+   },
+   "name": "Gothic Perfusion",
+   "research_time": 40
+  },
+  "46": {
+   "cost": {
+    "food": 100,
+    "gold": 200
+   },
+   "name": "Devotion",
+   "research_time": 40
+  },
+  "460": {
+   "cost": {
+    "food": 400,
+    "gold": 350
+   },
+   "name": "Aztec Sacrifice",
+   "research_time": 40
+  },
+  "461": {
+   "cost": {
+    "gold": 400,
+    "wood": 800
+   },
+   "name": "Britons City Rights",
+   "research_time": 40
+  },
+  "462": {
+   "cost": {
+    "stone": 200,
+    "wood": 400
+   },
+   "name": "Chinese Great Wall",
+   "research_time": 40
+  },
+  "463": {
+   "cost": {
+    "food": 600,
+    "gold": 450
+   },
+   "name": "Viking Chieftains",
+   "research_time": 40
+  },
+  "464": {
+   "cost": {
+    "food": 250,
+    "gold": 300
+   },
+   "name": "Byzantines Greek Fire",
+   "research_time": 40
+  },
+  "47": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Chemistry",
+   "research_time": 100
+  },
+  "48": {
+   "cost": {
+    "food": 200,
+    "gold": 200
+   },
+   "name": "Caravan",
+   "research_time": 40
+  },
+  "482": {
+   "cost": {
+    "food": 250,
+    "gold": 200
+   },
+   "name": "Stronghold",
+   "research_time": 30
+  },
+  "483": {
+   "cost": {
+    "gold": 200,
+    "wood": 300
+   },
+   "name": "Huns UT",
+   "research_time": 40
+  },
+  "484": {
+   "cost": {
+    "food": 300,
+    "wood": 300
+   },
+   "name": "Japanese UT",
+   "research_time": 40
+  },
+  "485": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Mayans UT",
+   "research_time": 40
+  },
+  "486": {
+   "cost": {
+    "food": 300,
+    "wood": 300
+   },
+   "name": "Koreans UT",
+   "research_time": 40
+  },
+  "487": {
+   "cost": {
+    "gold": 150,
+    "wood": 300
+   },
+   "name": "Mongols UT",
+   "research_time": 40
+  },
+  "488": {
+   "cost": {
+    "food": 400,
+    "gold": 300
+   },
+   "name": "Persians UT",
+   "research_time": 40
+  },
+  "489": {
+   "cost": {
+    "gold": 350,
+    "wood": 400
+   },
+   "name": "Teutons UT",
+   "research_time": 60
+  },
+  "49": {
+   "cost": {
+    "food": 650,
+    "gold": 500
+   },
+   "name": "Bogsveigar",
+   "research_time": 40
+  },
+  "491": {
+   "cost": {
+    "food": 350,
+    "gold": 150
+   },
+   "name": "Sipahi",
+   "research_time": 60
+  },
+  "492": {
+   "cost": {
+    "food": 100,
+    "gold": 300
+   },
+   "name": "Spanish UT",
+   "research_time": 40
+  },
+  "493": {
+   "cost": {
+    "gold": 500,
+    "wood": 600
+   },
+   "name": "Franks UT",
+   "research_time": 40
+  },
+  "499": {
+   "cost": {
+    "food": 250,
+    "gold": 250
+   },
+   "name": "Silk Route",
+   "research_time": 60
+  },
+  "5": {
+   "cost": {
+    "food": 750,
+    "gold": 450
+   },
+   "name": "Celtic Furor Celtica",
+   "research_time": 50
+  },
+  "50": {
+   "cost": {
+    "food": 150,
+    "wood": 175
+   },
+   "name": "Masonry",
+   "research_time": 50
+  },
+  "506": {
+   "cost": {
+    "food": 250,
+    "wood": 200
+   },
+   "name": "Indians UT",
+   "research_time": 40
+  },
+  "507": {
+   "cost": {
+    "food": 500,
+    "gold": 650
+   },
+   "name": "Indians UT2",
+   "research_time": 40
+  },
+  "51": {
+   "cost": {
+    "food": 300,
+    "wood": 200
+   },
+   "name": "Architecture",
+   "research_time": 70
+  },
+  "513": {
+   "cost": {
+    "food": 900,
+    "gold": 500
+   },
+   "name": "Slavs UT",
+   "research_time": 40
+  },
+  "514": {
+   "cost": {
+    "food": 200,
+    "gold": 300
+   },
+   "name": "Magyars UT",
+   "research_time": 40
+  },
+  "515": {
+   "cost": {
+    "gold": 400,
+    "wood": 600
+   },
+   "name": "Indians UT",
+   "research_time": 40
+  },
+  "516": {
+   "cost": {
+    "food": 200,
+    "gold": 300
+   },
+   "name": "Incas UT",
+   "research_time": 40
+  },
+  "517": {
+   "cost": {
+    "food": 600,
+    "gold": 600
+   },
+   "name": "Indians UT",
+   "research_time": 40
+  },
+  "52": {
+   "cost": {
+    "food": 1100,
+    "gold": 900
+   },
+   "name": "Chinese Rocketry",
+   "research_time": 60
+  },
+  "54": {
+   "cost": {
+    "stone": 50,
+    "wood": 200
+   },
+   "name": "Stone cutting",
+   "research_time": 20
+  },
+  "55": {
+   "cost": {
+    "food": 100,
+    "wood": 75
+   },
+   "name": "Gold Mining",
+   "research_time": 30
+  },
+  "573": {
+   "cost": {
+    "food": 700,
+    "gold": 400
+   },
+   "name": "Portuguese UT",
+   "research_time": 40
+  },
+  "574": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Ethiopian UT",
+   "research_time": 40
+  },
+  "575": {
+   "cost": {
+    "food": 1000,
+    "gold": 600
+   },
+   "name": "Ethiopian UT",
+   "research_time": 40
+  },
+  "576": {
+   "cost": {
+    "food": 200,
+    "wood": 300
+   },
+   "name": "Malian UT",
+   "research_time": 40
+  },
+  "577": {
+   "cost": {
+    "food": 650,
+    "gold": 400
+   },
+   "name": "Malian UT",
+   "research_time": 40
+  },
+  "578": {
+   "cost": {
+    "food": 250,
+    "gold": 250
+   },
+   "name": "Berber UT",
+   "research_time": 40
+  },
+  "579": {
+   "cost": {
+    "food": 700,
+    "gold": 300
+   },
+   "name": "Berber UT",
+   "research_time": 40
+  },
+  "59": {
+   "cost": {
+    "gold": 300,
+    "wood": 550
+   },
+   "name": "Japanese Kataparuto",
+   "research_time": 60
+  },
+  "6": {
+   "cost": {
+    "gold": 450,
+    "wood": 500
+   },
+   "name": "Mongol Siege Drill",
+   "research_time": 60
+  },
+  "602": {
+   "cost": {
+    "food": 75,
+    "gold": 25
+   },
+   "name": "Arson",
+   "research_time": 25
+  },
+  "608": {
+   "cost": {
+    "food": 250,
+    "wood": 250
+   },
+   "name": "Arrowslits",
+   "research_time": 25
+  },
+  "61": {
+   "cost": {
+    "food": 800,
+    "gold": 600
+   },
+   "name": "Byzantine Logistica",
+   "research_time": 50
+  },
+  "622": {
+   "cost": {
+    "gold": 450,
+    "wood": 300
+   },
+   "name": "Khmer UT",
+   "research_time": 40
+  },
+  "623": {
+   "cost": {
+    "food": 700,
+    "gold": 400
+   },
+   "name": "Khmer UT",
+   "research_time": 40
+  },
+  "624": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Malay UT",
+   "research_time": 40
+  },
+  "625": {
+   "cost": {
+    "food": 850,
+    "gold": 500
+   },
+   "name": "Malay UT",
+   "research_time": 40
+  },
+  "626": {
+   "cost": {
+    "food": 400,
+    "wood": 300
+   },
+   "name": "Burmese UT",
+   "research_time": 40
+  },
+  "627": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Burmese UT",
+   "research_time": 40
+  },
+  "628": {
+   "cost": {
+    "food": 250,
+    "gold": 250
+   },
+   "name": "Vietnamese UT",
+   "research_time": 40
+  },
+  "629": {
+   "cost": {
+    "food": 550,
+    "wood": 200
+   },
+   "name": "Vietnamese UT",
+   "research_time": 60
+  },
+  "63": {
+   "cost": {
+    "food": 500,
+    "wood": 350
+   },
+   "name": "Keep",
+   "research_time": 75
+  },
+  "64": {
+   "cost": {
+    "food": 800,
+    "wood": 400
+   },
+   "name": "Bombard Tower",
+   "research_time": 60
+  },
+  "65": {
+   "cost": {
+    "food": 100,
+    "wood": 125
+   },
+   "name": "Gillnets",
+   "research_time": 30
+  },
+  "67": {
+   "cost": {
+    "food": 150
+   },
+   "name": "Forging",
+   "research_time": 50
+  },
+  "68": {
+   "cost": {
+    "food": 220,
+    "gold": 120
+   },
+   "name": "Iron casting",
+   "research_time": 75
+  },
+  "685": {
+   "cost": {
+    "food": 400,
+    "gold": 200
+   },
+   "name": "Khmer UT",
+   "research_time": 35
+  },
+  "686": {
+   "cost": {
+    "food": 900,
+    "gold": 450
+   },
+   "name": "Khmer UT",
+   "research_time": 40
+  },
+  "687": {
+   "cost": {
+    "gold": 300,
+    "wood": 400
+   },
+   "name": "Malay UT",
+   "research_time": 40
+  },
+  "688": {
+   "cost": {
+    "gold": 400,
+    "wood": 500
+   },
+   "name": "Malay UT",
+   "research_time": 50
+  },
+  "689": {
+   "cost": {
+    "food": 200,
+    "wood": 300
+   },
+   "name": "Burmese UT",
+   "research_time": 40
+  },
+  "690": {
+   "cost": {
+    "food": 650,
+    "gold": 400
+   },
+   "name": "Burmese UT",
+   "research_time": 40
+  },
+  "691": {
+   "cost": {
+    "food": 250,
+    "gold": 250
+   },
+   "name": "Vietnamese UT",
+   "research_time": 40
+  },
+  "692": {
+   "cost": {
+    "food": 500,
+    "gold": 200
+   },
+   "name": "Vietnamese UT",
+   "research_time": 40
+  },
+  "7": {
+   "cost": {
+    "gold": 300,
+    "wood": 600
+   },
+   "name": "Citadels",
+   "research_time": 50
+  },
+  "74": {
+   "cost": {
+    "food": 100
+   },
+   "name": "Scale Mail Armor",
+   "research_time": 40
+  },
+  "75": {
+   "cost": {
+    "food": 275,
+    "gold": 225
+   },
+   "name": "Blast Furnace",
+   "research_time": 100
+  },
+  "754": {
+   "cost": {
+    "food": 400,
+    "gold": 300
+   },
+   "name": "Burgundian Vineyards",
+   "research_time": 45
+  },
+  "755": {
+   "cost": {
+    "food": 200,
+    "gold": 150
+   },
+   "name": "Flemish Revolution",
+   "research_time": 10
+  },
+  "756": {
+   "cost": {
+    "food": 400,
+    "gold": 300
+   },
+   "name": "First Crusade",
+   "research_time": 60
+  },
+  "757": {
+   "cost": {
+    "food": 700,
+    "gold": 600
+   },
+   "name": "Hauberk",
+   "research_time": 45
+  },
+  "76": {
+   "cost": {
+    "food": 200,
+    "gold": 100
+   },
+   "name": "Chain Mail Armor",
+   "research_time": 55
+  },
+  "77": {
+   "cost": {
+    "food": 300,
+    "gold": 150
+   },
+   "name": "Plate Mail Armor",
+   "research_time": 70
+  },
+  "782": {
+   "cost": {
+    "food": 500,
+    "gold": 300
+   },
+   "name": "Szlachta Privileges",
+   "research_time": 45
+  },
+  "783": {
+   "cost": {
+    "food": 750,
+    "gold": 550
+   },
+   "name": "Lechitic Legacy",
+   "research_time": 60
+  },
+  "784": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Wagenburg Tactics",
+   "research_time": 45
+  },
+  "785": {
+   "cost": {
+    "food": 500,
+    "gold": 450
+   },
+   "name": "Hussite Reforms",
+   "research_time": 45
+  },
+  "8": {
+   "cost": {
+    "food": 75
+   },
+   "name": "Town Watch",
+   "research_time": 25
+  },
+  "80": {
+   "cost": {
+    "food": 350,
+    "gold": 200
+   },
+   "name": "Plate Barding Armor",
+   "research_time": 75
+  },
+  "81": {
+   "cost": {
+    "food": 150
+   },
+   "name": "Scale Barding Armor",
+   "research_time": 45
+  },
+  "82": {
+   "cost": {
+    "food": 250,
+    "gold": 150
+   },
+   "name": "Chain Barding Armor",
+   "research_time": 60
+  },
+  "83": {
+   "cost": {
+    "food": 300,
+    "gold": 300
+   },
+   "name": "Frankish Bearded Axe",
+   "research_time": 60
+  },
+  "831": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Medical Corps",
+   "research_time": 45
+  },
+  "832": {
+   "cost": {
+    "food": 650,
+    "gold": 550
+   },
+   "name": "Wootz Steel",
+   "research_time": 60
+  },
+  "833": {
+   "cost": {
+    "gold": 275,
+    "wood": 375
+   },
+   "name": "Paiks",
+   "research_time": 45
+  },
+  "834": {
+   "cost": {
+    "gold": 650,
+    "wood": 800
+   },
+   "name": "Mahayana",
+   "research_time": 60
+  },
+  "835": {
+   "cost": {
+    "food": 500,
+    "gold": 450
+   },
+   "name": "Kshatriyas",
+   "research_time": 45
+  },
+  "836": {
+   "cost": {
+    "food": 800,
+    "gold": 700
+   },
+   "name": "Frontier Guards",
+   "research_time": 60
+  },
+  "875": {
+   "cost": {
+    "food": 50,
+    "gold": 100
+   },
+   "name": "Gambesons",
+   "research_time": 25
+  },
+  "883": {
+   "cost": {
+    "gold": 300,
+    "wood": 400
+   },
+   "name": "Ballistas",
+   "research_time": 45
+  },
+  "884": {
+   "cost": {
+    "food": 700,
+    "gold": 800
+   },
+   "name": "Comitatenses",
+   "research_time": 60
+  },
+  "902": {
+   "cost": {
+    "food": 650,
+    "gold": 500
+   },
+   "name": "Pirotecnia",
+   "research_time": 50
+  },
+  "906": {
+   "cost": {
+    "food": 50,
+    "wood": 100
+   },
+   "name": "Fishing Lines",
+   "research_time": 20
+  },
+  "907": {
+   "cost": {
+    "food": 350,
+    "wood": 200
+   },
+   "name": "Carvel Hull",
+   "research_time": 60
+  },
+  "908": {
+   "cost": {
+    "food": 150,
+    "wood": 100
+   },
+   "name": "Clinker Construction",
+   "research_time": 50
+  },
+  "909": {
+   "cost": {
+    "food": 100,
+    "gold": 175
+   },
+   "name": "Carvel Hull",
+   "research_time": 45
+  },
+  "910": {
+   "cost": {
+    "food": 200,
+    "gold": 325
+   },
+   "name": "Clinker Construction",
+   "research_time": 50
+  },
+  "921": {
+   "cost": {
+    "food": 550,
+    "gold": 400
+   },
+   "name": "Fereters",
+   "research_time": 45
+  },
+  "922": {
+   "cost": {
+    "gold": 300,
+    "wood": 350
+   },
+   "name": "Cilician Fleet",
+   "research_time": 45
+  },
+  "923": {
+   "cost": {
+    "food": 300,
+    "gold": 200
+   },
+   "name": "Svan Towers",
+   "research_time": 45
+  },
+  "924": {
+   "cost": {
+    "food": 550,
+    "gold": 250
+   },
+   "name": "Aznauri Cavalry",
+   "research_time": 45
+  },
+  "93": {
+   "cost": {
+    "gold": 175,
+    "wood": 300
+   },
+   "name": "Ballistics",
+   "research_time": 60
+  },
+  "996": {
+   "cost": {
+    "food": 350,
+    "wood": 250
+   },
+   "name": "Fortifed Bastions",
+   "research_time": 40
+  },
+  "997": {
+   "cost": {
+    "food": 900,
+    "gold": 600
+   },
+   "name": "Thunderclap Bombs",
+   "research_time": 50
+  }
+ },
+ "units": {
+  "1001": {
+   "cost": {
+    "gold": 70,
+    "wood": 80
+   },
+   "name": "ORGAN",
+   "train_time": 25
+  },
+  "1003": {
+   "cost": {
+    "gold": 70,
+    "wood": 80
+   },
+   "name": "EORGAN",
+   "train_time": 21
+  },
+  "1004": {
+   "cost": {
+    "gold": 43,
+    "wood": 90
+   },
+   "name": "CARAV",
+   "train_time": 25
+  },
+  "1006": {
+   "cost": {
+    "gold": 43,
+    "wood": 90
+   },
+   "name": "CARAV",
+   "train_time": 25
+  },
+  "1007": {
+   "cost": {
+    "gold": 60,
+    "wood": 50
+   },
+   "name": "CAMAR",
+   "train_time": 25
+  },
+  "1009": {
+   "cost": {
+    "gold": 60,
+    "wood": 50
+   },
+   "name": "ECAMAR",
+   "train_time": 25
+  },
+  "1010": {
+   "cost": {
+    "food": 40,
+    "wood": 35
+   },
+   "name": "GENITO",
+   "train_time": 25
+  },
+  "1012": {
+   "cost": {
+    "food": 40,
+    "wood": 35
+   },
+   "name": "EGENITO",
+   "train_time": 23
+  },
+  "1013": {
+   "cost": {
+    "food": 50,
+    "gold": 40
+   },
+   "name": "GBETO",
+   "train_time": 17
+  },
+  "1015": {
+   "cost": {
+    "food": 50,
+    "gold": 40
+   },
+   "name": "EGBETO",
+   "train_time": 17
+  },
+  "1016": {
+   "cost": {
+    "food": 50,
+    "gold": 30
+   },
+   "name": "SHOTEL",
+   "train_time": 8
+  },
+  "1018": {
+   "cost": {
+    "food": 50,
+    "gold": 30
+   },
+   "name": "ESHOTEL",
+   "train_time": 4
+  },
+  "11": {
+   "cost": {
+    "gold": 65,
+    "wood": 55
+   },
+   "name": "MOSUN",
+   "train_time": 26
+  },
+  "1103": {
+   "cost": {
+    "gold": 45,
+    "wood": 75
+   },
+   "name": "SFRGAL",
+   "train_time": 49
+  },
+  "1104": {
+   "cost": {
+    "gold": 80,
+    "wood": 45
+   },
+   "name": "SDGAL",
+   "train_time": 45
+  },
+  "1105": {
+   "cost": {
+    "gold": 120,
+    "wood": 100
+   },
+   "name": "SIEGTWR",
+   "train_time": 36
+  },
+  "1120": {
+   "cost": {
+    "food": 100,
+    "gold": 80
+   },
+   "name": "ELEBALI",
+   "train_time": 25
+  },
+  "1122": {
+   "cost": {
+    "food": 100,
+    "gold": 80
+   },
+   "name": "EELEBALI",
+   "train_time": 25
+  },
+  "1123": {
+   "cost": {
+    "food": 25,
+    "gold": 15
+   },
+   "name": "KARAM",
+   "train_time": 6
+  },
+  "1125": {
+   "cost": {
+    "food": 25,
+    "gold": 15
+   },
+   "name": "EKARAM",
+   "train_time": 6
+  },
+  "1126": {
+   "cost": {
+    "gold": 60,
+    "wood": 75
+   },
+   "name": "ARAMBAI",
+   "train_time": 18
+  },
+  "1128": {
+   "cost": {
+    "gold": 60,
+    "wood": 75
+   },
+   "name": "EARAMBAI",
+   "train_time": 18
+  },
+  "1129": {
+   "cost": {
+    "gold": 45,
+    "wood": 50
+   },
+   "name": "RATAN",
+   "train_time": 16
+  },
+  "1131": {
+   "cost": {
+    "gold": 45,
+    "wood": 50
+   },
+   "name": "ERATAN",
+   "train_time": 16
+  },
+  "1132": {
+   "cost": {
+    "food": 100,
+    "gold": 70
+   },
+   "name": "BATELE",
+   "train_time": 24
+  },
+  "1134": {
+   "cost": {
+    "food": 100,
+    "gold": 70
+   },
+   "name": "EBATELE",
+   "train_time": 24
+  },
+  "1155": {
+   "cost": {
+    "food": 25,
+    "wood": 35
+   },
+   "name": "IHXBOW",
+   "train_time": 22
+  },
+  "1225": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "KONNIK",
+   "train_time": 16
+  },
+  "1227": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "EKONNIK",
+   "train_time": 16
+  },
+  "1228": {
+   "cost": {
+    "food": 60,
+    "gold": 40
+   },
+   "name": "KESHIK",
+   "train_time": 17
+  },
+  "1230": {
+   "cost": {
+    "food": 60,
+    "gold": 40
+   },
+   "name": "EKESHIK",
+   "train_time": 15
+  },
+  "1231": {
+   "cost": {
+    "gold": 35,
+    "wood": 60
+   },
+   "name": "KIPCHAK",
+   "train_time": 20
+  },
+  "1233": {
+   "cost": {
+    "gold": 35,
+    "wood": 60
+   },
+   "name": "EKIPCHAK",
+   "train_time": 20
+  },
+  "1234": {
+   "cost": {
+    "food": 70,
+    "gold": 50
+   },
+   "name": "LEITIS",
+   "train_time": 20
+  },
+  "1236": {
+   "cost": {
+    "food": 70,
+    "gold": 50
+   },
+   "name": "ELEITIS",
+   "train_time": 18
+  },
+  "125": {
+   "cost": {
+    "food": 0,
+    "gold": 100
+   },
+   "name": "MONKX",
+   "train_time": 51
+  },
+  "1252": {
+   "cost": {
+    "food": 0,
+    "gold": 0
+   },
+   "name": "KONNIK_INF",
+   "train_time": 16
+  },
+  "1253": {
+   "cost": {
+    "food": 0,
+    "gold": 0
+   },
+   "name": "EKONNIK_INF",
+   "train_time": 16
+  },
+  "1254": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "KONNIK",
+   "train_time": 16
+  },
+  "1255": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "EKONNIK",
+   "train_time": 16
+  },
+  "1258": {
+   "cost": {
+    "gold": 75,
+    "wood": 160
+   },
+   "name": "BTRAM",
+   "train_time": 36
+  },
+  "1263": {
+   "cost": {
+    "food": 75,
+    "gold": 30
+   },
+   "name": "FCAMEL",
+   "train_time": 30
+  },
+  "128": {
+   "cost": {
+    "gold": 50,
+    "wood": 100
+   },
+   "name": "TCART",
+   "train_time": 51
+  },
+  "13": {
+   "cost": {
+    "wood": 75
+   },
+   "name": "FSHSP",
+   "train_time": 40
+  },
+  "1302": {
+   "cost": {
+    "gold": 45,
+    "wood": 75
+   },
+   "name": "DRAGS",
+   "train_time": 27
+  },
+  "1370": {
+   "cost": {
+    "food": 70,
+    "gold": 40
+   },
+   "name": "SLANCER",
+   "train_time": 24
+  },
+  "1372": {
+   "cost": {
+    "food": 70,
+    "gold": 40
+   },
+   "name": "ESLANCER",
+   "train_time": 20
+  },
+  "1570": {
+   "cost": {
+    "food": 60,
+    "gold": 75
+   },
+   "name": "AZTRAIDER",
+   "train_time": 30
+  },
+  "1655": {
+   "cost": {
+    "food": 55,
+    "gold": 55
+   },
+   "name": "COUSTILLIER",
+   "train_time": 15
+  },
+  "1657": {
+   "cost": {
+    "food": 55,
+    "gold": 55
+   },
+   "name": "ECOUSTILLIER",
+   "train_time": 14
+  },
+  "1658": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "SERJEANT",
+   "train_time": 12
+  },
+  "1659": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "ESERJEANT",
+   "train_time": 12
+  },
+  "1660": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "DSERJEANT",
+   "train_time": 16
+  },
+  "1661": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "EDSERJEANT",
+   "train_time": 12
+  },
+  "1699": {
+   "cost": {
+    "food": 30,
+    "gold": 25
+   },
+   "name": "FLEMISHPIKEMAN2",
+   "train_time": 14
+  },
+  "17": {
+   "cost": {
+    "gold": 50,
+    "wood": 100
+   },
+   "name": "COGXX",
+   "train_time": 36
+  },
+  "1701": {
+   "cost": {
+    "food": 55,
+    "gold": 20
+   },
+   "name": "OBUCH",
+   "train_time": 12
+  },
+  "1703": {
+   "cost": {
+    "food": 55,
+    "gold": 20
+   },
+   "name": "EOBUCH",
+   "train_time": 12
+  },
+  "1704": {
+   "cost": {
+    "gold": 70,
+    "wood": 110
+   },
+   "name": "HUSSITEWAGON",
+   "train_time": 30
+  },
+  "1706": {
+   "cost": {
+    "gold": 70,
+    "wood": 110
+   },
+   "name": "EHUSSITEWAGON",
+   "train_time": 26
+  },
+  "1707": {
+   "cost": {
+    "food": 80
+   },
+   "name": "WINGEDHUSSAR",
+   "train_time": 30
+  },
+  "1709": {
+   "cost": {
+    "gold": 225,
+    "wood": 225
+   },
+   "name": "HOUFNICE",
+   "train_time": 56
+  },
+  "1735": {
+   "cost": {
+    "food": 65,
+    "gold": 20
+   },
+   "name": "URUMI",
+   "train_time": 9
+  },
+  "1737": {
+   "cost": {
+    "food": 65,
+    "gold": 20
+   },
+   "name": "EURUMI",
+   "train_time": 9
+  },
+  "1738": {
+   "cost": {
+    "gold": 60,
+    "wood": 60
+   },
+   "name": "RATHA",
+   "train_time": 20
+  },
+  "1740": {
+   "cost": {
+    "gold": 60,
+    "wood": 60
+   },
+   "name": "ERATHA",
+   "train_time": 18
+  },
+  "1741": {
+   "cost": {
+    "food": 65,
+    "gold": 30
+   },
+   "name": "CHAKRAM",
+   "train_time": 15
+  },
+  "1743": {
+   "cost": {
+    "food": 65,
+    "gold": 30
+   },
+   "name": "ECHAKRAM",
+   "train_time": 15
+  },
+  "1744": {
+   "cost": {
+    "food": 120,
+    "gold": 95
+   },
+   "name": "ARELE",
+   "train_time": 36
+  },
+  "1746": {
+   "cost": {
+    "food": 120,
+    "gold": 95
+   },
+   "name": "EARELE",
+   "train_time": 36
+  },
+  "1747": {
+   "cost": {
+    "food": 30,
+    "gold": 45
+   },
+   "name": "GHULAM",
+   "train_time": 12
+  },
+  "1749": {
+   "cost": {
+    "food": 30,
+    "gold": 45
+   },
+   "name": "EGHULAM",
+   "train_time": 12
+  },
+  "1750": {
+   "cost": {
+    "gold": 60,
+    "wood": 180
+   },
+   "name": "THIRISADAI",
+   "train_time": 40
+  },
+  "1751": {
+   "cost": {
+    "food": 70,
+    "gold": 30
+   },
+   "name": "SHRIVAMSHA",
+   "train_time": 20
+  },
+  "1753": {
+   "cost": {
+    "food": 70,
+    "gold": 30
+   },
+   "name": "ESHRIVAMSHA",
+   "train_time": 20
+  },
+  "1755": {
+   "cost": {
+    "food": 55,
+    "gold": 60
+   },
+   "name": "CAMELSC",
+   "train_time": 22
+  },
+  "1759": {
+   "cost": {
+    "gold": 60,
+    "wood": 60
+   },
+   "name": "RATHA2",
+   "train_time": 20
+  },
+  "1761": {
+   "cost": {
+    "gold": 60,
+    "wood": 60
+   },
+   "name": "ERATHA2",
+   "train_time": 18
+  },
+  "1786": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "DPKEMN",
+   "train_time": 22
+  },
+  "1787": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "DISPKM",
+   "train_time": 22
+  },
+  "1788": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "DHLBDM",
+   "train_time": 22
+  },
+  "1790": {
+   "cost": {
+    "food": 75,
+    "gold": 85
+   },
+   "name": "CENTURION",
+   "train_time": 24
+  },
+  "1792": {
+   "cost": {
+    "food": 75,
+    "gold": 85
+   },
+   "name": "ECENTURION",
+   "train_time": 24
+  },
+  "1793": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "LEGIONARY",
+   "train_time": 21
+  },
+  "1795": {
+   "cost": {
+    "gold": 150,
+    "wood": 175
+   },
+   "name": "DROMON",
+   "train_time": 65
+  },
+  "1800": {
+   "cost": {
+    "gold": 45,
+    "wood": 35
+   },
+   "name": "COMPBOW",
+   "train_time": 12
+  },
+  "1802": {
+   "cost": {
+    "gold": 45,
+    "wood": 35
+   },
+   "name": "ECOMPBOW",
+   "train_time": 10
+  },
+  "1803": {
+   "cost": {
+    "food": 60,
+    "gold": 45
+   },
+   "name": "MONASPA",
+   "train_time": 14
+  },
+  "1805": {
+   "cost": {
+    "food": 60,
+    "gold": 45
+   },
+   "name": "EMONASPA",
+   "train_time": 14
+  },
+  "1811": {
+   "cost": {
+    "food": 40,
+    "gold": 50
+   },
+   "name": "WARRIORPRIEST",
+   "train_time": 30
+  },
+  "1813": {
+   "cost": {
+    "food": 60,
+    "gold": 75
+   },
+   "name": "SAVAR",
+   "train_time": 30
+  },
+  "185": {
+   "cost": {
+    "food": 50,
+    "wood": 25
+   },
+   "name": "SLINGR",
+   "train_time": 25
+  },
+  "1901": {
+   "cost": {
+    "gold": 45,
+    "wood": 45
+   },
+   "name": "FLNCER",
+   "train_time": 35
+  },
+  "1903": {
+   "cost": {
+    "gold": 45,
+    "wood": 45
+   },
+   "name": "EFLNCER",
+   "train_time": 25
+  },
+  "1904": {
+   "cost": {
+    "gold": 155,
+    "wood": 135
+   },
+   "name": "RCKTCRT",
+   "train_time": 40
+  },
+  "1907": {
+   "cost": {
+    "gold": 155,
+    "wood": 135
+   },
+   "name": "HRCKTCRT",
+   "train_time": 40
+  },
+  "1908": {
+   "cost": {
+    "food": 80,
+    "gold": 55
+   },
+   "name": "IRONPAG",
+   "train_time": 14
+  },
+  "1910": {
+   "cost": {
+    "food": 80,
+    "gold": 55
+   },
+   "name": "EIRONPAG",
+   "train_time": 14
+  },
+  "1911": {
+   "cost": {
+    "food": 35,
+    "gold": 65
+   },
+   "name": "GRNADR",
+   "train_time": 21
+  },
+  "1920": {
+   "cost": {
+    "food": 40,
+    "gold": 40
+   },
+   "name": "LIAODAO",
+   "train_time": 12
+  },
+  "1922": {
+   "cost": {
+    "food": 40,
+    "gold": 40
+   },
+   "name": "ELIAODAO",
+   "train_time": 12
+  },
+  "1923": {
+   "cost": {
+    "food": 175,
+    "gold": 175
+   },
+   "name": "SIEGECAMEL",
+   "train_time": 46
+  },
+  "1942": {
+   "cost": {
+    "gold": 210,
+    "wood": 175
+   },
+   "name": "TRTREB",
+   "train_time": 70
+  },
+  "1944": {
+   "cost": {
+    "food": 65,
+    "gold": 65
+   },
+   "name": "HKUCAV",
+   "train_time": 28
+  },
+  "1946": {
+   "cost": {
+    "food": 65,
+    "gold": 65
+   },
+   "name": "HHKUCAV",
+   "train_time": 28
+  },
+  "1948": {
+   "cost": {
+    "gold": 225,
+    "wood": 250
+   },
+   "name": "LOUCHUAN",
+   "train_time": 60
+  },
+  "1949": {
+   "cost": {
+    "food": 60,
+    "gold": 80
+   },
+   "name": "TIGERCAV",
+   "train_time": 18
+  },
+  "1951": {
+   "cost": {
+    "food": 60,
+    "gold": 80
+   },
+   "name": "ETIGERCAV",
+   "train_time": 18
+  },
+  "1952": {
+   "cost": {
+    "gold": 25,
+    "wood": 65
+   },
+   "name": "XIANBEI",
+   "train_time": 29
+  },
+  "1954": {
+   "cost": {
+    "food": 500,
+    "gold": 500
+   },
+   "name": "CAOCAO",
+   "train_time": 60
+  },
+  "1959": {
+   "cost": {
+    "food": 60,
+    "gold": 15
+   },
+   "name": "WHTFTHRG",
+   "train_time": 11
+  },
+  "1961": {
+   "cost": {
+    "food": 60,
+    "gold": 15
+   },
+   "name": "EWHTFTHRG",
+   "train_time": 11
+  },
+  "1962": {
+   "cost": {
+    "food": 65,
+    "gold": 90
+   },
+   "name": "WARCHAR",
+   "train_time": 28
+  },
+  "1966": {
+   "cost": {
+    "food": 500,
+    "gold": 500
+   },
+   "name": "LIUBEI",
+   "train_time": 60
+  },
+  "1968": {
+   "cost": {
+    "gold": 45,
+    "wood": 45
+   },
+   "name": "FIREARCHER",
+   "train_time": 17
+  },
+  "1970": {
+   "cost": {
+    "gold": 45,
+    "wood": 45
+   },
+   "name": "EFIREARCHER",
+   "train_time": 17
+  },
+  "1974": {
+   "cost": {
+    "food": 45,
+    "gold": 50
+   },
+   "name": "JIANSWDS",
+   "train_time": 35
+  },
+  "1978": {
+   "cost": {
+    "food": 500,
+    "gold": 500
+   },
+   "name": "SUNJIAN",
+   "train_time": 60
+  },
+  "1980": {
+   "cost": {
+    "food": 65,
+    "gold": 90
+   },
+   "name": "WARCHAR",
+   "train_time": 28
+  },
+  "207": {
+   "cost": {
+    "food": 55,
+    "gold": 60
+   },
+   "name": "SHCLRY",
+   "train_time": 20
+  },
+  "21": {
+   "cost": {
+    "gold": 30,
+    "wood": 90
+   },
+   "name": "GALLY",
+   "train_time": 27
+  },
+  "232": {
+   "cost": {
+    "food": 70,
+    "gold": 25
+   },
+   "name": "WBRSK",
+   "train_time": 10
+  },
+  "239": {
+   "cost": {
+    "food": 170,
+    "gold": 85
+   },
+   "name": "MPCAV",
+   "train_time": 25
+  },
+  "24": {
+   "cost": {
+    "gold": 45,
+    "wood": 25
+   },
+   "name": "CARCH",
+   "train_time": 27
+  },
+  "25": {
+   "cost": {
+    "food": 85,
+    "gold": 30
+   },
+   "name": "TKNIT",
+   "train_time": 12
+  },
+  "250": {
+   "cost": {
+    "gold": 50,
+    "wood": 100
+   },
+   "name": "LNGBT",
+   "train_time": 25
+  },
+  "2550": {
+   "cost": {
+    "food": 50,
+    "gold": 25
+   },
+   "name": "CHAMPIR",
+   "train_time": 42
+  },
+  "2552": {
+   "cost": {
+    "food": 50,
+    "gold": 25
+   },
+   "name": "CHAMPIW",
+   "train_time": 26
+  },
+  "2554": {
+   "cost": {
+    "food": 50,
+    "gold": 25
+   },
+   "name": "ECHAMPIW",
+   "train_time": 21
+  },
+  "2562": {
+   "cost": {
+    "gold": 60,
+    "wood": 50
+   },
+   "name": "GUECHA",
+   "train_time": 17
+  },
+  "2564": {
+   "cost": {
+    "gold": 60,
+    "wood": 50
+   },
+   "name": "EGUECHA",
+   "train_time": 17
+  },
+  "2566": {
+   "cost": {
+    "food": 65,
+    "gold": 40
+   },
+   "name": "KONA",
+   "train_time": 14
+  },
+  "2568": {
+   "cost": {
+    "food": 65,
+    "gold": 40
+   },
+   "name": "EKONA",
+   "train_time": 14
+  },
+  "2569": {
+   "cost": {
+    "gold": 50,
+    "wood": 45
+   },
+   "name": "BOLASR",
+   "train_time": 34
+  },
+  "2571": {
+   "cost": {
+    "gold": 50,
+    "wood": 45
+   },
+   "name": "EBOLASR",
+   "train_time": 28
+  },
+  "2579": {
+   "cost": {
+    "gold": 45,
+    "wood": 35
+   },
+   "name": "BLCKWOOD",
+   "train_time": 18
+  },
+  "2581": {
+   "cost": {
+    "gold": 45,
+    "wood": 35
+   },
+   "name": "EBLCKWOOD",
+   "train_time": 14
+  },
+  "2582": {
+   "cost": {
+    "food": 30,
+    "gold": 60
+   },
+   "name": "IBIRAP",
+   "train_time": 24
+  },
+  "2584": {
+   "cost": {
+    "food": 30,
+    "gold": 60
+   },
+   "name": "EIBIRAP",
+   "train_time": 24
+  },
+  "2586": {
+   "cost": {
+    "food": 70,
+    "gold": 45
+   },
+   "name": "Temple Guard",
+   "train_time": 28
+  },
+  "2587": {
+   "cost": {
+    "food": 70,
+    "gold": 45
+   },
+   "name": "Elite Temple Guard",
+   "train_time": 24
+  },
+  "2588": {
+   "cost": {
+    "food": 50,
+    "gold": 25
+   },
+   "name": "CHAMPIS",
+   "train_time": 34
+  },
+  "2626": {
+   "cost": {
+    "gold": 35,
+    "wood": 75
+   },
+   "name": "Hulk",
+   "train_time": 42
+  },
+  "2627": {
+   "cost": {
+    "gold": 35,
+    "wood": 75
+   },
+   "name": "War hulk",
+   "train_time": 27
+  },
+  "2628": {
+   "cost": {
+    "gold": 35,
+    "wood": 75
+   },
+   "name": "Carrack",
+   "train_time": 27
+  },
+  "2633": {
+   "cost": {
+    "gold": 100,
+    "wood": 225
+   },
+   "name": "CATAGA",
+   "train_time": 55
+  },
+  "279": {
+   "cost": {
+    "gold": 75,
+    "wood": 75
+   },
+   "name": "SCBAL",
+   "train_time": 30
+  },
+  "280": {
+   "cost": {
+    "gold": 135,
+    "wood": 160
+   },
+   "name": "MANGO",
+   "train_time": 46
+  },
+  "281": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "TAXEM",
+   "train_time": 13
+  },
+  "282": {
+   "cost": {
+    "food": 55,
+    "gold": 85
+   },
+   "name": "DERVI",
+   "train_time": 23
+  },
+  "283": {
+   "cost": {
+    "food": 60,
+    "gold": 75
+   },
+   "name": "PALDN",
+   "train_time": 30
+  },
+  "291": {
+   "cost": {
+    "food": 45,
+    "gold": 30
+   },
+   "name": "SMURI",
+   "train_time": 9
+  },
+  "329": {
+   "cost": {
+    "food": 55,
+    "gold": 60
+   },
+   "name": "CVLRY",
+   "train_time": 22
+  },
+  "330": {
+   "cost": {
+    "food": 55,
+    "gold": 60
+   },
+   "name": "HCLRY",
+   "train_time": 22
+  },
+  "331": {
+   "cost": {
+    "gold": 200,
+    "wood": 200
+   },
+   "name": "PTREB",
+   "train_time": 50
+  },
+  "358": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "ISPKM",
+   "train_time": 22
+  },
+  "359": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "HLBDM",
+   "train_time": 22
+  },
+  "36": {
+   "cost": {
+    "gold": 225,
+    "wood": 225
+   },
+   "name": "BCANN",
+   "train_time": 56
+  },
+  "38": {
+   "cost": {
+    "food": 60,
+    "gold": 75
+   },
+   "name": "KNGHT",
+   "train_time": 30
+  },
+  "39": {
+   "cost": {
+    "gold": 60,
+    "wood": 40
+   },
+   "name": "CVRCH",
+   "train_time": 37
+  },
+  "4": {
+   "cost": {
+    "gold": 45,
+    "wood": 25
+   },
+   "name": "ARCHR",
+   "train_time": 35
+  },
+  "40": {
+   "cost": {
+    "food": 70,
+    "gold": 75
+   },
+   "name": "CATAP",
+   "train_time": 20
+  },
+  "41": {
+   "cost": {
+    "food": 75,
+    "gold": 35
+   },
+   "name": "GBRSK",
+   "train_time": 13
+  },
+  "42": {
+   "cost": {
+    "gold": 200,
+    "wood": 200
+   },
+   "name": "TREBU",
+   "train_time": 50
+  },
+  "420": {
+   "cost": {
+    "gold": 150,
+    "wood": 200
+   },
+   "name": "CANGA",
+   "train_time": 46
+  },
+  "422": {
+   "cost": {
+    "gold": 75,
+    "wood": 160
+   },
+   "name": "CBATR",
+   "train_time": 36
+  },
+  "440": {
+   "cost": {
+    "food": 65,
+    "gold": 20
+   },
+   "name": "PETARD",
+   "train_time": 25
+  },
+  "441": {
+   "cost": {
+    "food": 80
+   },
+   "name": "HUSSAR",
+   "train_time": 30
+  },
+  "442": {
+   "cost": {
+    "gold": 30,
+    "wood": 90
+   },
+   "name": "WARGA",
+   "train_time": 27
+  },
+  "448": {
+   "cost": {
+    "food": 80
+   },
+   "name": "SCOUT",
+   "train_time": 30
+  },
+  "46": {
+   "cost": {
+    "food": 60,
+    "gold": 55
+   },
+   "name": "JANNI",
+   "train_time": 21
+  },
+  "473": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "HTHSW",
+   "train_time": 21
+  },
+  "474": {
+   "cost": {
+    "gold": 60,
+    "wood": 40
+   },
+   "name": "HCVAR",
+   "train_time": 30
+  },
+  "492": {
+   "cost": {
+    "gold": 45,
+    "wood": 25
+   },
+   "name": "ACOAR",
+   "train_time": 27
+  },
+  "5": {
+   "cost": {
+    "food": 45,
+    "gold": 50
+   },
+   "name": "HCANR",
+   "train_time": 34
+  },
+  "527": {
+   "cost": {
+    "gold": 80,
+    "wood": 45
+   },
+   "name": "RMSHP",
+   "train_time": 31
+  },
+  "528": {
+   "cost": {
+    "gold": 80,
+    "wood": 45
+   },
+   "name": "CRMSH",
+   "train_time": 31
+  },
+  "529": {
+   "cost": {
+    "gold": 45,
+    "wood": 75
+   },
+   "name": "FRGAL",
+   "train_time": 27
+  },
+  "530": {
+   "cost": {
+    "gold": 40,
+    "wood": 35
+   },
+   "name": "ULGBW",
+   "train_time": 18
+  },
+  "531": {
+   "cost": {
+    "food": 55,
+    "gold": 25
+   },
+   "name": "UTAXE",
+   "train_time": 13
+  },
+  "532": {
+   "cost": {
+    "gold": 45,
+    "wood": 75
+   },
+   "name": "HFGAL",
+   "train_time": 27
+  },
+  "533": {
+   "cost": {
+    "gold": 50,
+    "wood": 100
+   },
+   "name": "ULNGB",
+   "train_time": 25
+  },
+  "534": {
+   "cost": {
+    "food": 70,
+    "gold": 25
+   },
+   "name": "UWBRS",
+   "train_time": 10
+  },
+  "539": {
+   "cost": {
+    "gold": 30,
+    "wood": 90
+   },
+   "name": "SGALY",
+   "train_time": 45
+  },
+  "542": {
+   "cost": {
+    "gold": 75,
+    "wood": 75
+   },
+   "name": "HWBAL",
+   "train_time": 30
+  },
+  "545": {
+   "cost": {
+    "wood": 125
+   },
+   "name": "XPORT",
+   "train_time": 46
+  },
+  "546": {
+   "cost": {
+    "food": 80
+   },
+   "name": "LTCAV",
+   "train_time": 30
+  },
+  "548": {
+   "cost": {
+    "gold": 75,
+    "wood": 160
+   },
+   "name": "SGRAM",
+   "train_time": 36
+  },
+  "550": {
+   "cost": {
+    "gold": 135,
+    "wood": 160
+   },
+   "name": "ONAGR",
+   "train_time": 46
+  },
+  "553": {
+   "cost": {
+    "food": 70,
+    "gold": 75
+   },
+   "name": "UCATA",
+   "train_time": 20
+  },
+  "554": {
+   "cost": {
+    "food": 85,
+    "gold": 30
+   },
+   "name": "UTKNI",
+   "train_time": 12
+  },
+  "555": {
+   "cost": {
+    "food": 75,
+    "gold": 35
+   },
+   "name": "UGBRS",
+   "train_time": 13
+  },
+  "556": {
+   "cost": {
+    "food": 55,
+    "gold": 85
+   },
+   "name": "UDERV",
+   "train_time": 23
+  },
+  "557": {
+   "cost": {
+    "food": 60,
+    "gold": 55
+   },
+   "name": "UJANI",
+   "train_time": 21
+  },
+  "558": {
+   "cost": {
+    "food": 170,
+    "gold": 85
+   },
+   "name": "UMPCAV",
+   "train_time": 25
+  },
+  "559": {
+   "cost": {
+    "gold": 35,
+    "wood": 40
+   },
+   "name": "UCHUK",
+   "train_time": 13
+  },
+  "560": {
+   "cost": {
+    "food": 45,
+    "gold": 30
+   },
+   "name": "USMUR",
+   "train_time": 9
+  },
+  "561": {
+   "cost": {
+    "gold": 65,
+    "wood": 55
+   },
+   "name": "UMOSU",
+   "train_time": 26
+  },
+  "567": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "HEROI",
+   "train_time": 21
+  },
+  "569": {
+   "cost": {
+    "food": 60,
+    "gold": 75
+   },
+   "name": "HEROC",
+   "train_time": 30
+  },
+  "588": {
+   "cost": {
+    "gold": 135,
+    "wood": 160
+   },
+   "name": "SNAGR",
+   "train_time": 46
+  },
+  "6": {
+   "cost": {
+    "food": 25,
+    "wood": 35
+   },
+   "name": "HXBOW",
+   "train_time": 22
+  },
+  "691": {
+   "cost": {
+    "gold": 150,
+    "wood": 200
+   },
+   "name": "CNGAU",
+   "train_time": 46
+  },
+  "692": {
+   "cost": {
+    "food": 65,
+    "gold": 20
+   },
+   "name": "VBRSK",
+   "train_time": 14
+  },
+  "694": {
+   "cost": {
+    "food": 65,
+    "gold": 20
+   },
+   "name": "UVBRK",
+   "train_time": 12
+  },
+  "7": {
+   "cost": {
+    "food": 25,
+    "wood": 35
+   },
+   "name": "XBOWM",
+   "train_time": 26
+  },
+  "725": {
+   "cost": {
+    "food": 60,
+    "gold": 30
+   },
+   "name": "JAGUAR",
+   "train_time": 12
+  },
+  "726": {
+   "cost": {
+    "food": 60,
+    "gold": 30
+   },
+   "name": "JAGUARX",
+   "train_time": 12
+  },
+  "73": {
+   "cost": {
+    "gold": 35,
+    "wood": 40
+   },
+   "name": "CHUKN",
+   "train_time": 16
+  },
+  "74": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "SPRMN",
+   "train_time": 21
+  },
+  "75": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "SWDMN",
+   "train_time": 21
+  },
+  "751": {
+   "cost": {
+    "food": 20,
+    "gold": 50
+   },
+   "name": "EAGLE",
+   "train_time": 50
+  },
+  "752": {
+   "cost": {
+    "food": 20,
+    "gold": 50
+   },
+   "name": "EAGLEX",
+   "train_time": 20
+  },
+  "753": {
+   "cost": {
+    "food": 20,
+    "gold": 50
+   },
+   "name": "EAGLEH",
+   "train_time": 35
+  },
+  "755": {
+   "cost": {
+    "food": 60,
+    "gold": 60
+   },
+   "name": "TARKAN",
+   "train_time": 14
+  },
+  "757": {
+   "cost": {
+    "food": 60,
+    "gold": 60
+   },
+   "name": "UTARK",
+   "train_time": 14
+  },
+  "759": {
+   "cost": {
+    "food": 75,
+    "gold": 35
+   },
+   "name": "BHUSK",
+   "train_time": 13
+  },
+  "761": {
+   "cost": {
+    "food": 75,
+    "gold": 35
+   },
+   "name": "BHUSKX",
+   "train_time": 13
+  },
+  "763": {
+   "cost": {
+    "gold": 55,
+    "wood": 55
+   },
+   "name": "PLUME",
+   "train_time": 16
+  },
+  "765": {
+   "cost": {
+    "gold": 55,
+    "wood": 55
+   },
+   "name": "UPLUM",
+   "train_time": 16
+  },
+  "77": {
+   "cost": {
+    "food": 50,
+    "gold": 20
+   },
+   "name": "THSWD",
+   "train_time": 21
+  },
+  "771": {
+   "cost": {
+    "food": 70,
+    "gold": 60
+   },
+   "name": "CONQI",
+   "train_time": 24
+  },
+  "773": {
+   "cost": {
+    "food": 70,
+    "gold": 60
+   },
+   "name": "UCONQ",
+   "train_time": 24
+  },
+  "775": {
+   "cost": {
+    "gold": 100
+   },
+   "name": "MONKY",
+   "train_time": 51
+  },
+  "8": {
+   "cost": {
+    "gold": 40,
+    "wood": 35
+   },
+   "name": "LNGBW",
+   "train_time": 18
+  },
+  "827": {
+   "cost": {
+    "gold": 60,
+    "wood": 200
+   },
+   "name": "WAGON",
+   "train_time": 21
+  },
+  "829": {
+   "cost": {
+    "gold": 60,
+    "wood": 200
+   },
+   "name": "UWAGO",
+   "train_time": 21
+  },
+  "83": {
+   "cost": {
+    "food": 50
+   },
+   "name": "VMBAS",
+   "train_time": 25
+  },
+  "831": {
+   "cost": {
+    "gold": 130,
+    "wood": 190
+   },
+   "name": "TURTL",
+   "train_time": 50
+  },
+  "832": {
+   "cost": {
+    "gold": 130,
+    "wood": 190
+   },
+   "name": "UTURT",
+   "train_time": 50
+  },
+  "866": {
+   "cost": {
+    "gold": 40,
+    "wood": 45
+   },
+   "name": "GENOE",
+   "train_time": 14
+  },
+  "868": {
+   "cost": {
+    "gold": 40,
+    "wood": 45
+   },
+   "name": "GENOE_E",
+   "train_time": 14
+  },
+  "869": {
+   "cost": {
+    "food": 35,
+    "gold": 45
+   },
+   "name": "UMAGYX",
+   "train_time": 12
+  },
+  "871": {
+   "cost": {
+    "food": 35,
+    "gold": 45
+   },
+   "name": "UMAGYX",
+   "train_time": 12
+  },
+  "873": {
+   "cost": {
+    "food": 60,
+    "gold": 80
+   },
+   "name": "ELEAR",
+   "train_time": 32
+  },
+  "875": {
+   "cost": {
+    "food": 60,
+    "gold": 80
+   },
+   "name": "UELEA",
+   "train_time": 32
+  },
+  "876": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "BOYAR",
+   "train_time": 15
+  },
+  "878": {
+   "cost": {
+    "food": 60,
+    "gold": 70
+   },
+   "name": "EBOYA",
+   "train_time": 15
+  },
+  "879": {
+   "cost": {
+    "food": 70,
+    "gold": 30
+   },
+   "name": "KAMAY",
+   "train_time": 10
+  },
+  "881": {
+   "cost": {
+    "food": 70,
+    "gold": 30
+   },
+   "name": "EKAMA",
+   "train_time": 10
+  },
+  "882": {
+   "cost": {
+    "food": 50,
+    "gold": 35
+   },
+   "name": "CONDO",
+   "train_time": 18
+  },
+  "886": {
+   "cost": {
+    "food": 60,
+    "gold": 60
+   },
+   "name": "TARKAN",
+   "train_time": 14
+  },
+  "887": {
+   "cost": {
+    "food": 60,
+    "gold": 60
+   },
+   "name": "UTARK",
+   "train_time": 14
+  },
+  "93": {
+   "cost": {
+    "food": 35,
+    "wood": 25
+   },
+   "name": "PKEMN",
+   "train_time": 22
+  }
+ },
+ "upstream_sha256": "4e2f85b39e39078cdee71bdbaf2c36a8f0b50202de4032df7ba8e2c36c6049c4"
+}

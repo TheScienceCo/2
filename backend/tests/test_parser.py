@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from itertools import pairwise
+
 import pytest
 
 from app.services.parser import ReplayParseError, get_parser
@@ -155,7 +157,7 @@ class TestViewport:
         """The camera emits every sync; only real movements are kept."""
         r = parser.parse(rec_with_queue)
         pairs = [(v.x, v.y) for v in r.viewport]
-        assert all(a != b for a, b in zip(pairs, pairs[1:], strict=False))
+        assert all(a != b for a, b in pairwise(pairs))
 
     def test_positions_are_within_the_map(self, parser, rec_with_queue):
         r = parser.parse(rec_with_queue)
