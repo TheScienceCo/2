@@ -88,3 +88,11 @@ api: ## Run the API locally (expects Postgres on localhost:5432)
 .PHONY: web
 web: ## Run the frontend locally against a local API
 	$(FRONTEND) API_INTERNAL_URL=http://localhost:8000 npm run dev
+
+.PHONY: corpus-status
+corpus-status: ## Show corpus ingestion status
+	$(BACKEND) .venv/bin/python -m app.cli corpus-status
+
+.PHONY: validate-parser
+validate-parser: ## Validate parser against aoestats baseline
+	$(BACKEND) .venv/bin/python -m app.cli validate-parser-cmd

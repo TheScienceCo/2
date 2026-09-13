@@ -147,7 +147,31 @@ Being straight about it, since an earlier version of this README was not:
 
 ---
 
-## Credits
+## Attributions & Legal
 
-Replay parsing by [aoc-mgz](https://github.com/happyleavesaoc/aoc-mgz).
-Not endorsed by or affiliated with Microsoft or Xbox Game Studios.
+### Data & Research
+
+**Baseline Corpus.** This project uses replay data from [aoestats.io](https://aoestats.io/), 
+an open-source Age of Empires II statistics platform. Their corpus provided the foundation 
+for our peer comparison baselines, cost table validation, and age timing benchmarks. Special 
+thanks to the aoestats team for maintaining a comprehensive, publicly-accessible replay archive.
+
+**Replay Parsing.** Core parsing functionality provided by [aoc-mgz](https://github.com/happyleavesaoc/aoc-mgz), 
+a community reverse-engineering effort that decodes the binary `.aoe2record` format.
+
+### Legal Compliance
+
+**Microsoft Game Content.** Age of Empires II: Definitive Edition is copyright © Microsoft 
+Corporation / Relic Entertainment. This project is a fan-made analytics tool and is not 
+affiliated with, endorsed by, or approved by Microsoft.
+
+In accordance with [Microsoft Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules), 
+this project:
+- Does not claim ownership of Age of Empires II content or intellectual property
+- Uses game content solely for player analytics and coaching purposes
+- Does not compete with official Microsoft offerings
+- Makes no commercial claims about the game
+
+**User Replay Data.** Analyzed replay files (`.aoe2record`) are proprietary game data. We 
+process them locally without uploading, storing, or retaining them. Users retain full 
+ownership and control of their replays.
