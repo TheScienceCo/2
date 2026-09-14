@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Link from "next/link";
+
+import { Nav } from "@/components/nav";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -13,38 +22,45 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">
-        <header className="border-b border-surface-border bg-surface-raised/60 backdrop-blur">
-          <div className="mx-auto flex max-w-7xl items-center gap-6 px-4 py-3">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
+    <html lang="en" className={inter.variable}>
+      <body className="flex min-h-screen flex-col">
+        <header className="sticky top-0 z-40 border-b border-surface-border bg-surface/80 backdrop-blur-md">
+          {/* Wraps to a second row rather than overflowing on a phone. */}
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 font-semibold tracking-tight transition-opacity hover:opacity-80"
+            >
               <span
                 aria-hidden
                 className="inline-block h-5 w-5 rounded bg-gradient-to-br from-accent to-accent-soft"
               />
               AoE2 Analytics
             </Link>
-            <nav className="flex items-center gap-4 text-sm text-ink-muted">
-              <Link href="/upload" className="hover:text-ink">
-                Upload Replay
-              </Link>
-              <Link href="/methodology" className="hover:text-ink">
-                Methodology
-              </Link>
-              <Link href="https://github.com/thescienceco/league" className="hover:text-ink">
+
+            <div className="ml-auto flex items-center gap-1">
+              <Nav />
+              <a
+                href="https://github.com/thescienceco/league"
+                className="rounded-md px-2.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
+              >
                 GitHub
-              </Link>
-            </nav>
+              </a>
+            </div>
           </div>
         </header>
-        <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
-        <footer className="mx-auto max-w-7xl px-4 pb-10 pt-4 text-xs text-ink-faint">
-          <p>
-            Analysis is derived from replay files, which record player commands rather
-            than game outcomes. Figures marked <em>inferred</em> or <em>reconstructed</em>
-            are estimates, not measurements. Not endorsed by or affiliated with Microsoft
-            or Xbox Game Studios.
-          </p>
+
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4">{children}</main>
+
+        <footer className="border-t border-surface-border">
+          <div className="mx-auto max-w-7xl px-4 py-6 text-xs leading-relaxed text-ink-faint">
+            <p className="max-w-3xl">
+              Analysis is derived from replay files, which record player commands rather than
+              game outcomes. Figures marked <em>inferred</em> or <em>reconstructed</em> are
+              estimates, not measurements. Not endorsed by or affiliated with Microsoft or Xbox
+              Game Studios.
+            </p>
+          </div>
         </footer>
       </body>
     </html>

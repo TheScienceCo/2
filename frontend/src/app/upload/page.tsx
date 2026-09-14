@@ -52,8 +52,8 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="space-y-8 py-6">
-      <header className="space-y-2">
+    <div className="space-y-8 py-10">
+      <header className={`space-y-2 ${result ? "" : "mx-auto max-w-2xl text-center"}`}>
         <h1 className="text-3xl font-semibold tracking-tight">Analyse a replay</h1>
         <p className="text-ink-muted">
           Drop an <code className="font-mono text-sm">.aoe2record</code> file in. Nothing
@@ -61,6 +61,7 @@ export default function UploadPage() {
         </p>
       </header>
 
+      {/* Until there's a result this is the whole page, so give it room. */}
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -72,10 +73,28 @@ export default function UploadPage() {
           setDragging(false);
           choose(e.dataTransfer.files[0]);
         }}
-        className={`rounded-lg border-2 border-dashed p-8 text-center transition ${
-          dragging ? "border-accent bg-surface-raised" : "border-surface-border bg-surface-raised/40"
+        className={`mx-auto flex max-w-2xl flex-col items-center justify-center rounded-xl border-2 border-dashed text-center transition-colors ${
+          result ? "px-6 py-8" : "px-6 py-16"
+        } ${
+          dragging
+            ? "border-accent bg-accent/5"
+            : "border-surface-border bg-surface-raised/40 hover:border-ink-faint"
         }`}
       >
+        <svg
+          aria-hidden
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`mb-3 h-8 w-8 transition-colors ${dragging ? "text-accent" : "text-ink-faint"}`}
+        >
+          <path d="M12 16V4m0 0L8 8m4-4 4 4" />
+          <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+        </svg>
+
         <p className="font-medium">Drag a replay here</p>
         <p className="mt-1 text-sm text-ink-muted">
           or{" "}
@@ -89,12 +108,23 @@ export default function UploadPage() {
             />
           </label>
         </p>
+        <p className="mt-3 font-mono text-[11px] text-ink-faint">
+          .aoe2record · .mgz · .mgx · .aoe2mpgame
+        </p>
         {file && (
           <p className="mt-3 text-xs text-ink-faint">
             {file.name} · {(file.size / 1_048_576).toFixed(1)} MB
           </p>
         )}
-        {busy && <p className="mt-3 text-sm text-ink-muted">Parsing and analysing…</p>}
+        {busy && (
+          <p className="mt-3 flex items-center gap-2 text-sm text-ink-muted">
+            <span
+              aria-hidden
+              className="h-3 w-3 animate-spin rounded-full border-2 border-surface-border border-t-accent"
+            />
+            Parsing and analysing…
+          </p>
+        )}
       </div>
 
       {error && (

@@ -1,5 +1,6 @@
 "use client";
 
+import { clock } from "@/lib/format";
 import { DVAReportResponse, DecisionEvaluationResponse } from "@/lib/types";
 
 interface DVATimelineProps {
@@ -42,12 +43,16 @@ export function DVATimeline({ report, matchDuration }: DVATimelineProps) {
         </div>
       </div>
 
-      {/* Decisions timeline */}
+      {/* Every evaluated decision, placed where in the match it happened. */}
+      {report.decisions.length > 0 && matchDuration > 0 && (
+        <MatchTrack decisions={report.decisions} matchDuration={matchDuration} />
+      )}
+
       <div className="space-y-2 border-t border-surface-border pt-4">
         <h3 className="text-sm font-semibold text-ink-muted">Top Decisions</h3>
         <div className="space-y-2">
           {report.top_decisions.slice(0, 3).map((decision, i) => (
-            <DecisionMarker key={i} decision={decision} matchDuration={matchDuration} />
+            <DecisionMarker key={i} decision={decision} />
           ))}
         </div>
       </div>
@@ -57,7 +62,7 @@ export function DVATimeline({ report, matchDuration }: DVATimelineProps) {
           <h3 className="text-sm font-semibold text-ink-muted">Areas for Improvement</h3>
           <div className="space-y-2">
             {report.bottom_decisions.slice(0, 3).map((decision, i) => (
-              <DecisionMarker key={i} decision={decision} matchDuration={matchDuration} />
+              <DecisionMarker key={i} decision={decision} />
             ))}
           </div>
         </div>
@@ -66,17 +71,45 @@ export function DVATimeline({ report, matchDuration }: DVATimelineProps) {
   );
 }
 
-function DecisionMarker({
-  decision,
+/**
+ * Each evaluated decision as a dot on the match's timeline. Position is when it
+ * happened, colour is whether it helped, opacity is how confident the figure is.
+ */
+function MatchTrack({
+  decisions,
   matchDuration,
 }: {
-  decision: DecisionEvaluationResponse;
+  decisions: DecisionEvaluationResponse[];
   matchDuration: number;
 }) {
-  const minutes = Math.floor(decision.timestamp_ms / 60000);
-  const seconds = Math.floor((decision.timestamp_ms % 60000) / 1000);
-  const timestamp = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  return (
+    <div className="space-y-1.5 border-t border-surface-border pt-4">
+      <div className="relative h-6">
+        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-surface-border" />
+        {decisions.map((d, i) => (
+          <span
+            key={i}
+            title={`${clock(d.timestamp_ms)} · ${d.decision_type} · ${d.value_added > 0 ? "+" : ""}${d.value_added.toFixed(2)}`}
+            className={`absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-surface-raised ${
+              d.value_added >= 0 ? "bg-emerald-500" : "bg-red-500"
+            }`}
+            style={{
+              left: `${Math.min(100, Math.max(0, (d.timestamp_ms / matchDuration) * 100))}%`,
+              opacity: 0.35 + d.confidence * 0.65,
+            }}
+          />
+        ))}
+      </div>
+      <div className="flex justify-between text-[11px] text-ink-faint">
+        <span>0:00</span>
+        <span>{clock(matchDuration)}</span>
+      </div>
+    </div>
+  );
+}
 
+function DecisionMarker({ decision }: { decision: DecisionEvaluationResponse }) {
+  const timestamp = clock(decision.timestamp_ms);
   const valueColor = decision.value_added > 0 ? "text-emerald-500" : "text-red-500";
 
   return (
