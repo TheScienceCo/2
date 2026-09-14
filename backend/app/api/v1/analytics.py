@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.db.models import Replay, CohortBaseline
 from app.db.session import get_db
 from app.services.analysis.coachable import load_coachable_match
-from app.services.analysis.compute import MetricsComputeService
+from app.services.analysis.compute import MetricsComputeService, PlayerMetrics
 from app.services.analysis.decision_value import DVAAnalyzer, DecisionEvaluation
 from app.services.analysis.playstyle import PlaystyleAnalyzer
 from app.services.analysis.radar import RadarAnalyzer
@@ -35,6 +35,28 @@ def _load_replay(db: Session, match_id: str) -> "Replay":
     if not replay:
         raise HTTPException(status_code=404, detail=f"Replay {match_id} not found")
     return replay
+
+
+def _rank_decisions(
+    decisions: list[DecisionEvaluationResponse],
+) -> tuple[list[DecisionEvaluationResponse], list[DecisionEvaluationResponse]]:
+    """Split decisions into what helped and what hurt, best and worst first.
+
+    Partitioning on the sign rather than taking head and tail of one list keeps
+    the two disjoint: a decision must never be reported as both a strength and
+    something to work on. Ties are broken by confidence, so a well-evidenced
+    decision outranks a marginal one of the same value.
+    """
+    helped = sorted(
+        (d for d in decisions if d.value_added > 0),
+        key=lambda d: (d.value_added * d.confidence),
+        reverse=True,
+    )
+    hurt = sorted(
+        (d for d in decisions if d.value_added < 0),
+        key=lambda d: (d.value_added * d.confidence),
+    )
+    return helped[:3], hurt[:3]
 
 
 def _metrics_to_dict(metrics: "PlayerMetrics") -> dict:
@@ -224,12 +246,14 @@ async def analyze_decisions(
             for d in report.decisions
         ]
 
+        top, bottom = _rank_decisions(decisions_response)
+
         return DVAReportResponse(
             decisions=decisions_response,
             total_value_added=report.total_value_added,
             decision_quality=report.decision_quality,
-            top_decisions=decisions_response[:3] if decisions_response else [],
-            bottom_decisions=list(reversed(decisions_response[-3:])) if decisions_response else [],
+            top_decisions=top,
+            bottom_decisions=bottom,
         )
     except HTTPException:
         raise
@@ -466,12 +490,14 @@ async def _analyze_player(
             for d in report.decisions
         ]
 
+        top, bottom = _rank_decisions(decisions_response)
+
         dva_response = DVAReportResponse(
             decisions=decisions_response,
             total_value_added=report.total_value_added,
             decision_quality=report.decision_quality,
-            top_decisions=decisions_response[:3] if decisions_response else [],
-            bottom_decisions=list(reversed(decisions_response[-3:])) if decisions_response else [],
+            top_decisions=top,
+            bottom_decisions=bottom,
         )
 
         # Playstyle Analysis
