@@ -48,14 +48,25 @@ export function DVATimeline({ report, matchDuration }: DVATimelineProps) {
         <MatchTrack decisions={report.decisions} matchDuration={matchDuration} />
       )}
 
-      <div className="space-y-2 border-t border-surface-border pt-4">
-        <h3 className="text-sm font-semibold text-ink-muted">Top Decisions</h3>
-        <div className="space-y-2">
-          {report.top_decisions.slice(0, 3).map((decision, i) => (
-            <DecisionMarker key={i} decision={decision} />
-          ))}
+      {report.decisions.length === 0 ? (
+        <p className="border-t border-surface-border pt-4 text-sm text-ink-faint">
+          No decisions could be scored. Decision value is measured against a peer cohort
+          at the same rating, and no baseline has been built for this player yet.
+        </p>
+      ) : (
+        <div className="space-y-2 border-t border-surface-border pt-4">
+          <h3 className="text-sm font-semibold text-ink-muted">Top Decisions</h3>
+          {report.top_decisions.length === 0 ? (
+            <p className="text-sm text-ink-faint">Nothing scored above the cohort median.</p>
+          ) : (
+            <div className="space-y-2">
+              {report.top_decisions.slice(0, 3).map((decision, i) => (
+                <DecisionMarker key={i} decision={decision} />
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       {report.bottom_decisions.length > 0 && (
         <div className="space-y-2 border-t border-surface-border pt-4">

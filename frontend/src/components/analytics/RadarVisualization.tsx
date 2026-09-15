@@ -1,25 +1,28 @@
 "use client";
 
 import { clock } from "@/lib/format";
-import type { RadarSectorResponse, RadarVisualizationResponse } from "@/lib/types";
+import type {
+  RadarSectorResponse,
+  RadarVisualizationResponse,
+} from "@/lib/types";
 
 interface RadarVisualizationProps {
   data: RadarVisualizationResponse;
 }
 
+/** Scouting is absent by design: the command stream retains no unit movement,
+ *  so a scouting share would be invented rather than measured. */
 const ACTION_LABEL: Record<string, string> = {
   economy: "Economy",
   military: "Military",
-  scouting: "Scouting",
   strategy: "Strategy",
 };
 
-/** Four categorical hues, separated for colour-vision deficiency and legible on
- *  the dark surface. Colour follows the action type, never its rank. */
+/** Categorical hues, separated for colour-vision deficiency and legible on the
+ *  dark surface. Colour follows the action type, never its rank. */
 const ACTION_COLOR: Record<string, string> = {
   economy: "#4c9aff",
   military: "#eb6834",
-  scouting: "#3fb950",
   strategy: "#a371f7",
 };
 
@@ -66,11 +69,11 @@ export function RadarVisualization({ data }: RadarVisualizationProps) {
 
         <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-1">
           <div>
-            <dt className="label">Average APM</dt>
+            <dt className="label">Commands / min</dt>
             <dd className="stat text-xl">{data.average_apm.toFixed(0)}</dd>
           </div>
           <div>
-            <dt className="label">Peak APM</dt>
+            <dt className="label">Busiest minute</dt>
             <dd className="stat text-xl">{data.peak_apm.toFixed(0)}</dd>
           </div>
           <div>
@@ -81,17 +84,27 @@ export function RadarVisualization({ data }: RadarVisualizationProps) {
       </div>
 
       <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-        {Object.keys(ACTION_LABEL).map((type) => (
-          <span key={type} className="flex items-center gap-1.5 text-xs text-ink-muted">
+        {Object.keys(ACTION_LABEL)
+          .filter((type) => (data.focus_distribution[type] ?? 0) > 0)
+          .map((type) => (
             <span
-              aria-hidden
-              className="h-2 w-2 rounded-sm"
-              style={{ background: ACTION_COLOR[type] }}
-            />
-            {ACTION_LABEL[type]}
-          </span>
-        ))}
+              key={type}
+              className="flex items-center gap-1.5 text-xs text-ink-muted"
+            >
+              <span
+                aria-hidden
+                className="h-2 w-2 rounded-sm"
+                style={{ background: ACTION_COLOR[type] }}
+              />
+              {ACTION_LABEL[type]}
+            </span>
+          ))}
       </div>
+
+      <p className="text-[11px] leading-snug text-ink-faint">
+        Orders per minute, not clicks: a replay records commands. Scouting is
+        not shown because the stream carries no unit movement to derive it from.
+      </p>
 
       <div className="space-y-2.5 border-t border-surface-border pt-4">
         <h3 className="text-sm font-semibold">Where attention went</h3>
@@ -100,8 +113,12 @@ export function RadarVisualization({ data }: RadarVisualizationProps) {
           .map(([type, share]) => (
             <div key={type} className="space-y-1">
               <div className="flex justify-between text-xs">
-                <span className="text-ink-muted">{ACTION_LABEL[type] ?? type}</span>
-                <span className="stat font-semibold">{(share * 100).toFixed(0)}%</span>
+                <span className="text-ink-muted">
+                  {ACTION_LABEL[type] ?? type}
+                </span>
+                <span className="stat font-semibold">
+                  {(share * 100).toFixed(0)}%
+                </span>
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-surface-overlay">
                 <div
@@ -173,7 +190,8 @@ function PolarRadar({
 
         {sectors.map((s, i) => {
           const radius =
-            R_INNER + (R_OUTER - R_INNER) * Math.sqrt(s.total_action_count / peak);
+            R_INNER +
+            (R_OUTER - R_INNER) * Math.sqrt(s.total_action_count / peak);
           const a0 = angleAt(s.time_start_ms);
           const a1 = angleAt(s.time_end_ms);
           if (a1 <= a0) return null;

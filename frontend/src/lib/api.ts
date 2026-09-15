@@ -37,6 +37,11 @@ export async function uploadReplay(file: File): Promise<MatchAnalysis> {
   return response.json();
 }
 
+/** Where the batch ingest page sends each file. Same endpoint as a single
+ *  upload — the queue is client-side, one request at a time. */
+export const REPLAY_ENDPOINT = `${BASE}/api/v1/replays`;
+export const API_BASE = BASE;
+
 /** The full analytics package for one stored replay. */
 export async function fetchInsights(matchId: string): Promise<MatchInsightsResponse> {
   let response: Response;
