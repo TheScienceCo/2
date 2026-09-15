@@ -7,10 +7,10 @@ repo root for the full documented set of variables.
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -26,7 +26,11 @@ class Settings(BaseSettings):
     environment: Literal["local", "test", "staging", "production"] = "local"
     debug: bool = True
     api_v1_prefix: str = "/api/v1"
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000"])
+    #: `NoDecode` keeps pydantic-settings from JSON-decoding this before the
+    #: validator below runs; without it the documented `A,B` form raises.
+    cors_origins: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["http://localhost:3000"]
+    )
     log_level: str = "INFO"
 
     # --- Database --------------------------------------------------------
