@@ -1,70 +1,96 @@
-"""Compute metrics from replay for analytics.
+"""Pull the analytics layer's inputs out of a stored analysis document.
 
-Extracts relevant data from a loaded replay and computes metrics needed
-for DVA, playstyle, and radar analysis.
+The document is the same one the API returns for an upload: `players` is a
+*list*, and each player's numbers live in a `metrics` dict where every entry
+carries its own availability. A metric marked `unavailable` has a null value,
+and must stay null here — substituting a zero would turn "this replay cannot
+say" into "this player did none of it", which is the one thing the whole
+provenance model exists to prevent.
 """
 
-from dataclasses import dataclass
-from typing import Optional
+from __future__ import annotations
 
-from app.db.models import Replay, ReplayPlayer
+from dataclasses import dataclass, field
+from typing import Any
+
+from app.db.models import Replay
 
 
 @dataclass
 class PlayerMetrics:
-    """Computed metrics for one player in a match."""
-    
+    """One player's inputs to the DVA, playstyle and radar analyses."""
+
     player_number: int
     name: str
     civilization: str
-    
-    # Age timings (ms)
-    feudal_ms: Optional[int] = None
-    castle_ms: Optional[int] = None
-    imperial_ms: Optional[int] = None
-    
-    # APM metrics
-    eapm: Optional[int] = None  # Effective APM
-    apm: Optional[int] = None  # Raw APM
-    
-    # Build order
-    opening: Optional[str] = None
-    
-    # Military metrics
-    military_spend_pct: Optional[float] = None
-    military_unit_diversity: int = 0
-    army_size: Optional[int] = None
-    
-    # Economy metrics
-    resource_float_avg: Optional[float] = None
-    resource_float_peak: Optional[float] = None
-    villager_uptime: Optional[float] = None
-    tc_idle_percentage: Optional[float] = None
-    
-    # Expansion metrics
+
+    # Age timings (ms), absent where the player never reached that age.
+    feudal_ms: int | None = None
+    castle_ms: int | None = None
+    imperial_ms: int | None = None
+
+    #: Effective APM. The parser reports no raw APM, so there is no `apm`.
+    eapm: int | None = None
+    opening: str | None = None
+
+    # Economy
+    resource_float_avg: float | None = None
+    resource_float_peak: float | None = None
+    time_floating_ms: int | None = None
+
+    # Production. Both are unavailable on replay versions whose unit-queue
+    # commands do not decode.
+    villagers_queued: int | None = None
+    max_production_gap_ms: int | None = None
+
+    # Build
+    buildings_placed: int | None = None
+    technologies_researched: int | None = None
+    #: Town Centres beyond the starting one — the only expansion signal a
+    #: command stream actually supports.
     expansion_count: int = 0
-    expansion_timing_ms: Optional[int] = None
-    
-    # Results
-    winner: Optional[bool] = None
+    expansion_timing_ms: int | None = None
+
+    #: One-minute categorised command counts.
+    action_timeline: list[dict] = field(default_factory=list)
+
+    winner: bool | None = None
+
+
+def _metric(metrics: dict[str, Any], key: str) -> float | int | None:
+    """A metric's value, or None when it is unavailable or missing."""
+    entry = metrics.get(key)
+    if not isinstance(entry, dict):
+        return None
+    if entry.get("availability") == "unavailable":
+        return None
+    return entry.get("value")
+
+
+def _as_int(value: Any) -> int | None:
+    return int(value) if isinstance(value, (int, float)) else None
 
 
 class MetricsComputeService:
-    """Compute metrics from replay data."""
-    
+    """Read a stored analysis document into `PlayerMetrics`."""
+
     def compute_from_replay(self, replay: Replay) -> dict[int, PlayerMetrics]:
-        """Compute metrics for both players from a replay.
-        
-        Args:
-            replay: Loaded Replay object with players
-            
-        Returns:
-            Dictionary mapping player_number to PlayerMetrics
+        """Metrics for every player in the replay, keyed by player number.
+
+        Falls back to the flattened `replay_players` columns when the analysis
+        document is missing, so a row written by an older pipeline still yields
+        the age timings it does have.
         """
-        metrics = {}
-        
+        document = replay.analysis if isinstance(replay.analysis, dict) else {}
+        by_number = {
+            p.get("player_number"): p
+            for p in document.get("players", [])
+            if isinstance(p, dict)
+        }
+
+        out: dict[int, PlayerMetrics] = {}
         for player in replay.players:
-            m = PlayerMetrics(
+            metrics = PlayerMetrics(
                 player_number=player.player_number,
                 name=player.name,
                 civilization=player.civilization,
@@ -75,137 +101,46 @@ class MetricsComputeService:
                 opening=player.opening,
                 winner=player.winner,
             )
-            
-            # Extract from analysis document if available
-            if replay.analysis:
-                self._extract_from_analysis(replay.analysis, player.player_number, m)
-            
-            metrics[player.player_number] = m
-        
-        return metrics
-    
-    def _extract_from_analysis(
-        self,
-        analysis: dict,
-        player_number: int,
-        metrics: PlayerMetrics,
-    ) -> None:
-        """Extract computed metrics from analysis document."""
-        
-        # Navigate to player-specific data
-        players = analysis.get("players", {})
-        player_key = f"player_{player_number}"
-        player_analysis = players.get(player_key, {})
-        
-        if not player_analysis:
-            return
-        
-        # Economy
-        metrics.resource_float_avg = player_analysis.get("resource_float_avg")
-        metrics.resource_float_peak = player_analysis.get("resource_float_peak")
-        metrics.villager_uptime = player_analysis.get("villager_uptime")
-        metrics.tc_idle_percentage = player_analysis.get("tc_idle_percentage")
-        
-        # Military
-        metrics.military_spend_pct = player_analysis.get("military_spend_pct")
-        unit_composition = player_analysis.get("unit_composition", {})
-        metrics.military_unit_diversity = len([u for u, c in unit_composition.items() if c > 0])
-        metrics.army_size = player_analysis.get("army_size")
-        
-        # Expansion
-        expansions = player_analysis.get("expansions", [])
-        metrics.expansion_count = len(expansions)
-        if expansions:
-            metrics.expansion_timing_ms = expansions[0].get("timestamp_ms")
-        
-        # APM
-        metrics.apm = player_analysis.get("apm")
-    
-    def get_cohort_context(
-        self,
-        player_metrics: PlayerMetrics,
-        cohort_baselines: dict,
-    ) -> dict:
-        """Build cohort context for a player.
-        
-        Context includes:
-        - Percentiles for each metric relative to cohort
-        - Mean and std for comparison
-        - Specificity level that was used
-        
-        Args:
-            player_metrics: Computed metrics for the player
-            cohort_baselines: Baselines from database (from BaselineService)
-            
-        Returns:
-            Dictionary with percentile and baseline data
-        """
-        context = {
-            "cohort_size": cohort_baselines.get("cohort_size", 0),
-            "specificity": cohort_baselines.get("specificity", 0),
-            "source": cohort_baselines.get("source", "unknown"),
-        }
-        
-        # Add percentiles and baselines for key metrics
-        metric_keys = [
-            ("feudal_ms", "Feudal age timing"),
-            ("castle_ms", "Castle age timing"),
-            ("imperial_ms", "Imperial age timing"),
-            ("eapm", "EAPM"),
-            ("apm", "APM"),
-            ("resource_float_avg", "Resource float average"),
-            ("tc_idle_percentage", "TC idle percentage"),
-            ("military_spend_pct", "Military spend %"),
-            ("expansion_count", "Expansion count"),
+            document_player = by_number.get(player.player_number)
+            if document_player:
+                self._merge(document_player, metrics)
+            out[player.player_number] = metrics
+
+        return out
+
+    def _merge(self, source: dict, target: PlayerMetrics) -> None:
+        metrics = source.get("metrics") or {}
+
+        ages = source.get("age_timings_ms") or {}
+        target.feudal_ms = _as_int(ages.get("feudal")) or target.feudal_ms
+        target.castle_ms = _as_int(ages.get("castle")) or target.castle_ms
+        target.imperial_ms = _as_int(ages.get("imperial")) or target.imperial_ms
+
+        target.eapm = _as_int(_metric(metrics, "eapm")) or target.eapm
+        target.opening = source.get("opening") or target.opening
+
+        float_mean = _metric(metrics, "float_mean")
+        float_peak = _metric(metrics, "float_peak")
+        target.resource_float_avg = float(float_mean) if float_mean is not None else None
+        target.resource_float_peak = float(float_peak) if float_peak is not None else None
+        target.time_floating_ms = _as_int(_metric(metrics, "time_floating"))
+
+        target.villagers_queued = _as_int(_metric(metrics, "villagers_queued"))
+        target.max_production_gap_ms = _as_int(_metric(metrics, "max_production_gap"))
+        target.buildings_placed = _as_int(_metric(metrics, "buildings_placed"))
+        target.technologies_researched = _as_int(_metric(metrics, "technologies_researched"))
+
+        target.action_timeline = [
+            b for b in (source.get("action_timeline") or []) if isinstance(b, dict)
         ]
-        
-        for metric_key, display_name in metric_keys:
-            value = getattr(player_metrics, metric_key)
-            
-            if value is None:
-                context[f"{metric_key}_percentile"] = 50
-                context[f"{metric_key}_baseline"] = None
-                context[f"{metric_key}_std"] = None
-                continue
-            
-            # Look up baseline for this metric
-            baseline_data = cohort_baselines.get(metric_key, {})
-            baseline_mean = baseline_data.get("mean")
-            baseline_std = baseline_data.get("std")
-            baseline_p50 = baseline_data.get("p50")
-            
-            if baseline_mean is not None and baseline_std is not None:
-                # Compute percentile (assuming normal distribution)
-                z_score = (value - baseline_mean) / baseline_std if baseline_std > 0 else 0
-                # Rough percentile from z-score
-                percentile = self._z_to_percentile(z_score)
-            else:
-                percentile = 50
-            
-            context[f"{metric_key}_percentile"] = percentile
-            context[f"{metric_key}_baseline"] = baseline_mean
-            context[f"{metric_key}_std"] = baseline_std
-            context[f"{metric_key}_p50"] = baseline_p50
-        
-        return context
-    
-    @staticmethod
-    def _z_to_percentile(z_score: float) -> int:
-        """Convert z-score to percentile (rough approximation)."""
-        import math
-        
-        # Using approximation of cumulative normal distribution
-        if z_score >= 3:
-            return 99
-        elif z_score >= 2:
-            return 97
-        elif z_score >= 1:
-            return 84
-        elif z_score >= 0:
-            return 50
-        elif z_score >= -1:
-            return 16
-        elif z_score >= -2:
-            return 3
-        else:
-            return 1
+
+        # Every Town Centre after the first is an expansion. The starting one is
+        # never placed by a command, so each one seen here is a deliberate one.
+        centres = [
+            entry
+            for entry in (source.get("build_order") or [])
+            if isinstance(entry, dict) and entry.get("building") == "Town Center"
+        ]
+        target.expansion_count = len(centres)
+        if centres:
+            target.expansion_timing_ms = _as_int(centres[0].get("timestamp_ms"))

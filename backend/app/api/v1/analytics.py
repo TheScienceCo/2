@@ -10,7 +10,6 @@ from app.services.analysis.coachable import load_coachable_match
 from app.services.analysis.compute import MetricsComputeService, PlayerMetrics
 from app.services.analysis.decision_value import DVAAnalyzer, DecisionEvaluation
 from app.services.analysis.playstyle import PlaystyleAnalyzer
-from app.services.analysis.radar import RadarAnalyzer
 from app.services.corpus.baselines import BaselineService, cohort_key
 from app.schemas.analytics import (
     DVAReportResponse,
@@ -59,26 +58,135 @@ def _rank_decisions(
     return helped[:3], hurt[:3]
 
 
-def _metrics_to_dict(metrics: "PlayerMetrics") -> dict:
-    """Convert PlayerMetrics dataclass to dict for analyzer methods."""
+def _metrics_to_dict(metrics: PlayerMetrics) -> dict:
+    """`PlayerMetrics` as the plain dict the analyzers read.
+
+    Keys the replay cannot answer are present and None rather than absent, so a
+    consumer can tell "not measurable from this file" from "not looked at".
+    """
     return {
         "feudal_ms": metrics.feudal_ms,
         "castle_ms": metrics.castle_ms,
         "imperial_ms": metrics.imperial_ms,
         "eapm": metrics.eapm,
-        "apm": metrics.apm,
         "opening": metrics.opening,
-        "military_spend_pct": metrics.military_spend_pct,
-        "military_unit_diversity": metrics.military_unit_diversity,
-        "army_size": metrics.army_size,
         "resource_float_avg": metrics.resource_float_avg,
         "resource_float_peak": metrics.resource_float_peak,
-        "villager_uptime": metrics.villager_uptime,
-        "tc_idle_percentage": metrics.tc_idle_percentage,
+        "time_floating_ms": metrics.time_floating_ms,
+        "villagers_queued": metrics.villagers_queued,
+        "max_production_gap_ms": metrics.max_production_gap_ms,
+        "buildings_placed": metrics.buildings_placed,
+        "technologies_researched": metrics.technologies_researched,
         "expansion_count": metrics.expansion_count,
         "expansion_timing_ms": metrics.expansion_timing_ms,
         "winner": metrics.winner,
     }
+
+
+_RADAR_COLOR = {"economy": "#4c9aff", "military": "#eb6834", "strategy": "#a371f7"}
+
+
+def _radar_from_timeline(
+    metrics: PlayerMetrics, duration_ms: int
+) -> RadarVisualizationResponse | None:
+    """Build the radar from the stored per-minute action timeline.
+
+    Returns None when the replay carries no timeline — an empty radar and an
+    unbuildable one must not look the same to the caller.
+
+    `focus_distribution` has no scouting key on purpose: the command stream
+    retains no unit movement, so a scouting share would be invented.
+    """
+    timeline = metrics.action_timeline
+    if not timeline:
+        return None
+
+    sectors: list[RadarSectorResponse] = []
+    totals = {"economy": 0, "military": 0, "strategy": 0}
+    peak_per_minute = 0
+
+    for bucket in timeline:
+        counts = {c: int(bucket.get(c, 0) or 0) for c in totals}
+        total = int(bucket.get("total", sum(counts.values())) or 0)
+        for category, value in counts.items():
+            totals[category] += value
+        peak_per_minute = max(peak_per_minute, total)
+
+        dominant = max(counts, key=lambda c: counts[c]) if total else "economy"
+        scale = float(total) if total else 1.0
+        sectors.append(
+            RadarSectorResponse(
+                time_start_ms=int(bucket.get("start_ms", 0)),
+                time_end_ms=int(bucket.get("end_ms", 0)),
+                economy_intensity=counts["economy"] / scale,
+                military_intensity=counts["military"] / scale,
+                scouting_intensity=0.0,
+                strategy_intensity=counts["strategy"] / scale,
+                dominant_action_type=dominant,
+                total_action_count=total,
+            )
+        )
+
+    grand_total = sum(totals.values())
+    minutes = max(1, len(timeline))
+
+    samples = [
+        ActionSampleResponse(
+            timestamp_ms=sector.time_start_ms,
+            intensity=(sector.total_action_count / peak_per_minute) if peak_per_minute else 0.0,
+            action_type=sector.dominant_action_type,
+            action_count=sector.total_action_count,
+            color_code=_RADAR_COLOR.get(sector.dominant_action_type, "#6b7785"),
+        )
+        for sector in sectors
+    ]
+
+    # How many times the dominant category actually changed hands.
+    shifts = sum(
+        1
+        for a, b in zip(sectors, sectors[1:])
+        if a.total_action_count and b.total_action_count
+        and a.dominant_action_type != b.dominant_action_type
+    )
+
+    return RadarVisualizationResponse(
+        match_duration_ms=duration_ms,
+        player_name=metrics.name,
+        samples=samples,
+        sectors=sectors,
+        # Commands per minute, not APM: the stream retains orders, not clicks.
+        average_apm=grand_total / minutes,
+        peak_apm=float(peak_per_minute),
+        focus_distribution=(
+            {c: totals[c] / grand_total for c in totals} if grand_total else {}
+        ),
+        attention_shifts=shifts,
+        playstyle_signature=_signature(sectors),
+    )
+
+
+def _signature(sectors: list[RadarSectorResponse]) -> str:
+    """A one-line read of how attention moved across the match."""
+    active = [s for s in sectors if s.total_action_count]
+    if not active:
+        return "No decodable commands for this player."
+
+    third = max(1, len(active) // 3)
+    phases = [active[:third], active[third : 2 * third], active[2 * third :]]
+    names = []
+    for phase in phases:
+        if not phase:
+            continue
+        tally: dict[str, int] = {}
+        for sector in phase:
+            tally[sector.dominant_action_type] = tally.get(sector.dominant_action_type, 0) + 1
+        names.append(max(tally, key=lambda c: tally[c]))
+
+    if not names:
+        return "No decodable commands for this player."
+    if len(set(names)) == 1:
+        return f"{names[0].capitalize()} focus throughout."
+    return " then ".join(n.capitalize() for n in names) + "."
 
 
 def _build_cohort_context(
@@ -369,57 +477,16 @@ async def get_radar_visualization(
         all_metrics = metrics_service.compute_from_replay(replay)
         p1_metrics = all_metrics[1]
 
-        # Generate radar visualization
-        analyzer = RadarAnalyzer()
-
-        # If we have command data in analysis, use it; otherwise generate from metrics
-        commands = []
-        if replay.analysis and "commands" in replay.analysis.get("players", {}).get("player_1", {}):
-            commands = replay.analysis["players"]["player_1"]["commands"]
-
-        viz = analyzer.analyze(
-            commands=commands,
-            match_duration_ms=replay.duration_ms,
-            player_name=p1.name,
-        )
-
-        # Convert to response format
-        samples_response = [
-            ActionSampleResponse(
-                timestamp_ms=sample.timestamp_ms,
-                intensity=sample.intensity,
-                action_type=sample.action_type,
-                action_count=sample.action_count,
-                color_code=sample.color_code,
+        radar = _radar_from_timeline(p1_metrics, replay.duration_ms)
+        if radar is None:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    "This replay carries no decodable command timeline, so no radar "
+                    "can be built for it."
+                ),
             )
-            for sample in viz.samples
-        ]
-
-        sectors_response = [
-            RadarSectorResponse(
-                time_start_ms=sector.time_start_ms,
-                time_end_ms=sector.time_end_ms,
-                economy_intensity=sector.economy_intensity,
-                military_intensity=sector.military_intensity,
-                scouting_intensity=sector.scouting_intensity,
-                strategy_intensity=sector.strategy_intensity,
-                dominant_action_type=sector.dominant_action_type,
-                total_action_count=sector.total_action_count,
-            )
-            for sector in viz.sectors
-        ]
-
-        return RadarVisualizationResponse(
-            match_duration_ms=viz.match_duration_ms,
-            player_name=viz.player_name,
-            samples=samples_response,
-            sectors=sectors_response,
-            average_apm=viz.average_apm,
-            peak_apm=viz.peak_apm,
-            focus_distribution=viz.focus_distribution,
-            attention_shifts=viz.attention_shifts,
-            playstyle_signature=viz.playstyle_signature,
-        )
+        return radar
     except HTTPException:
         raise
     except Exception as e:
@@ -536,59 +603,16 @@ async def _analyze_player(
         )
 
         # Radar Analysis
-        radar_analyzer = RadarAnalyzer()
-        commands = []
-        if replay.analysis and "commands" in replay.analysis.get("players", {}).get(f"player_{player_num}", {}):
-            commands = replay.analysis["players"][f"player_{player_num}"]["commands"]
-
-        viz = radar_analyzer.analyze(
-            commands=commands,
-            match_duration_ms=replay.duration_ms,
-            player_name=player.name,
-        )
-
-        samples_response = [
-            ActionSampleResponse(
-                timestamp_ms=sample.timestamp_ms,
-                intensity=sample.intensity,
-                action_type=sample.action_type,
-                action_count=sample.action_count,
-                color_code=sample.color_code,
-            )
-            for sample in viz.samples
-        ]
-
-        sectors_response = [
-            RadarSectorResponse(
-                time_start_ms=sector.time_start_ms,
-                time_end_ms=sector.time_end_ms,
-                economy_intensity=sector.economy_intensity,
-                military_intensity=sector.military_intensity,
-                scouting_intensity=sector.scouting_intensity,
-                strategy_intensity=sector.strategy_intensity,
-                dominant_action_type=sector.dominant_action_type,
-                total_action_count=sector.total_action_count,
-            )
-            for sector in viz.sectors
-        ]
-
-        radar_response = RadarVisualizationResponse(
-            match_duration_ms=viz.match_duration_ms,
-            player_name=viz.player_name,
-            samples=samples_response,
-            sectors=sectors_response,
-            average_apm=viz.average_apm,
-            peak_apm=viz.peak_apm,
-            focus_distribution=viz.focus_distribution,
-            attention_shifts=viz.attention_shifts,
-            playstyle_signature=viz.playstyle_signature,
-        )
+        radar_response = _radar_from_timeline(player_metrics, replay.duration_ms)
 
         return dva_response, playstyle_response, radar_response
 
-    except Exception as e:
-        log.warning(f"Analysis for player {player_num} failed: {e}")
-        return None, None, None
+    except Exception:
+        # A per-player failure must not take down the whole match view, but it
+        # has to be visible: a silent null here is indistinguishable from "this
+        # replay genuinely supports no analysis".
+        log.exception("analytics.player_failed", player_number=player_num)
+        raise
 
 
 @router.get("/matches/{match_id}/insights", response_model=MatchInsightsResponse, tags=["analytics"])
