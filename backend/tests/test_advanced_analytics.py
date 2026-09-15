@@ -97,7 +97,8 @@ class TestDVAAnalysis:
         
         report = analyzer.analyze(metrics, cohort, opponent)
         
-        assert report.n_comparisons is not None or len(report.decisions) > 0
+        # This cohort carries full age baselines, so the age criteria must score.
+        assert len(report.decisions) > 0
         assert report.decision_quality in ["excellent", "good", "neutral", "below-average"]
         assert len(report.top_decisions) > 0 or len(report.decisions) > 0
 
@@ -312,10 +313,41 @@ class TestIntegration:
         radar = radar_analyzer.analyze(commands, match_duration_ms=120_000)
         
         # Verify all produced results
-        assert len(dva_report.decisions) > 0 or dva_report.n_comparisons >= 0
+        assert isinstance(dva_report.decisions, list)
         assert playstyle_profile.primary_archetype is not None
         assert len(radar.sectors) > 0
         
         # Playstyle should have some awards with good metrics
         if playstyle_profile.awards:
             assert all(isinstance(a, PlaystyleAward) for a in playstyle_profile.awards)
+
+
+class TestAbsenceIsNotEvidence:
+    """A missing cohort must never read as a measured result.
+
+    These pin the two defaults that made a fresh install hand out legendary
+    awards at the 0th percentile to every player in every match.
+    """
+
+    def test_no_cohort_yields_no_awards(self):
+        profile = PlaystyleAnalyzer().analyze({"feudal_ms": 500_000}, {})
+        assert profile.awards == []
+
+    def test_no_cohort_yields_no_archetype_confidence(self):
+        profile = PlaystyleAnalyzer().analyze({"feudal_ms": 500_000}, {})
+        assert profile.primary_archetype is PlaystyleArchetype.BALANCED
+        assert profile.archetype_confidence == 0.0
+
+    def test_genuine_top_percentile_still_earns_its_award(self):
+        profile = PlaystyleAnalyzer().analyze(
+            {"feudal_ms": 500_000},
+            {"feudal_ms_percentile": 5, "castle_ms_percentile": 55},
+        )
+        assert any(a.award == "Fastest Feudal" for a in profile.awards)
+
+    def test_mid_percentile_earns_nothing(self):
+        profile = PlaystyleAnalyzer().analyze(
+            {"feudal_ms": 500_000},
+            {"feudal_ms_percentile": 62, "castle_ms_percentile": 55},
+        )
+        assert not any(a.award == "Fastest Feudal" for a in profile.awards)

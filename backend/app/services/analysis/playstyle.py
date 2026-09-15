@@ -74,6 +74,21 @@ class PlaystyleProfile:
         return "\n".join(lines)
 
 
+def _percentile_of(cohort_context: dict, name: str) -> float | None:
+    """The cohort percentile for a criterion, or None when it is unknown.
+
+    Criterion names are written both ways — `feudal_ms_percentile` and bare
+    `expansion_count` — so normalise rather than blindly appending a suffix,
+    which produced `..._percentile_percentile` and silently matched nothing.
+    """
+    keys = (name,) if name.endswith("_percentile") else (f"{name}_percentile", name)
+    for key in keys:
+        value = cohort_context.get(key)
+        if isinstance(value, (int, float)):
+            return float(value)
+    return None
+
+
 class PlaystyleAnalyzer:
     """Classify player playstyle and award recognition."""
     
@@ -148,9 +163,13 @@ class PlaystyleAnalyzer:
         if sorted_archetypes[0][1] > 0.4:  # Minimum threshold
             profile.primary_archetype = sorted_archetypes[0][0]
             profile.archetype_confidence = min(1.0, sorted_archetypes[0][1])
-            
+
             if sorted_archetypes[1][1] > 0.3:
                 profile.secondary_archetype = sorted_archetypes[1][0]
+        else:
+            # Falling back to "balanced" because nothing scored is not the same
+            # as measuring a balanced player; say so with the confidence.
+            profile.archetype_confidence = 0.0
         
         # Award achievements
         profile.awards = self._award_achievements(metrics, cohort_context)
@@ -172,13 +191,20 @@ class PlaystyleAnalyzer:
         total = 0
         
         for metric_name, (min_val, max_val) in thresholds.items():
+            percentile = _percentile_of(cohort_context, metric_name)
+            # An unknown percentile is not a miss and not a match — it is no
+            # evidence, so it must not dilute or inflate the score. Defaulting
+            # it to the median used to make every archetype half-true.
+            if percentile is None:
+                continue
             total += 1
-            percentile = cohort_context.get(f"{metric_name}_percentile", 50)
-            
             if min_val <= percentile <= max_val:
                 matches += 1
-        
-        return matches / max(1, total) if total > 0 else 0.0
+
+        # Below this there is too little evidence to name a playstyle at all.
+        if total < 2:
+            return 0.0
+        return matches / total
     
     def _award_achievements(
         self,
@@ -189,8 +215,13 @@ class PlaystyleAnalyzer:
         awards = []
         
         for award_name, metric_key, (min_pct, max_pct), rarity in self.AWARDS:
-            percentile = cohort_context.get(f"{metric_key}_percentile", 0)
-            
+            percentile = _percentile_of(cohort_context, metric_key)
+            # No cohort, no award. Defaulting a missing percentile to 0 put it
+            # inside every "top N%" band and handed out legendaries for data
+            # we never had.
+            if percentile is None:
+                continue
+
             if min_pct <= percentile <= max_pct:
                 awards.append(
                     PlaystyleAward(
