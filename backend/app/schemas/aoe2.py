@@ -35,6 +35,17 @@ class ResourcePoint(BaseModel):
     objects: int
 
 
+class ActionBucket(BaseModel):
+    """One minute of play, as categorised command counts."""
+
+    start_ms: int
+    end_ms: int
+    economy: int = 0
+    military: int = 0
+    strategy: int = 0
+    total: int = 0
+
+
 class PlayerAnalysisOut(BaseModel):
     player_number: int
     name: str
@@ -46,6 +57,13 @@ class PlayerAnalysisOut(BaseModel):
     metrics: dict[str, MetricOut] = Field(default_factory=dict)
     build_order: list[BuildOrderEntry] = Field(default_factory=list)
     resource_curve: list[ResourcePoint] = Field(default_factory=list)
+    action_timeline: list[ActionBucket] = Field(
+        default_factory=list,
+        description=(
+            "One-minute buckets of categorised command counts. Scouting is absent "
+            "on purpose: a replay carries no unit movement to derive it from."
+        ),
+    )
     insights: list[str] = Field(
         default_factory=list,
         description="Plain-language observations, each tied to a measured value.",

@@ -127,6 +127,7 @@ def _serialise(replay_id: str, filename: str, analysis: MatchAnalysis) -> dict[s
                 "metrics": {k: asdict(v) for k, v in p.metrics.items()},
                 "build_order": p.build_order,
                 "resource_curve": p.resource_curve,
+                "action_timeline": p.action_timeline,
                 "insights": insights.for_player(analysis, p),
             }
             for p in analysis.players

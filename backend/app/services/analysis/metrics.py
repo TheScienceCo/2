@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from itertools import pairwise
 from statistics import mean
 
+from app.services.analysis import actions
 from app.services.parser.types import (
     Availability,
     Command,
@@ -67,6 +68,8 @@ class PlayerAnalysis:
     opening: str | None = None
     #: When the building that identified the opening was placed, in ms.
     opening_evidence_ms: int | None = None
+    #: One-minute buckets of categorised command counts; the radar's input.
+    action_timeline: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -111,6 +114,7 @@ def _analyze_player(replay: ParsedReplay, number: int) -> PlayerAnalysis:
         civilization=player.civilization,
         winner=player.winner,
         age_timings_ms=ages,
+        action_timeline=actions.timeline(commands, replay.duration_ms),
         build_order=[
             {
                 "timestamp_ms": c.timestamp_ms,
